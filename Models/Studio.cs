@@ -7,5 +7,5 @@ public class Studio : BaseModel
 
     public int Capacity { get; set; }
 
-    public List<Facility> Facilities { get; } = [];
+    public List<StudioFacility> StudioFacilities { get; } = [];
 }

@@ -1,11 +1,11 @@
 namespace CinemaApp.Models;
-public class StudioFacility : BaseModel
+public class StudioFacility
 {
     public int StudioId { get; set; }
+    
+    public Studio Studio { get; set; } = null!;
 
     public int FacilityId { get; set; }
-
-    public Studio Studio { get; set; } = null!;
 
     public Facility Facility { get; set; } = null!;
 }

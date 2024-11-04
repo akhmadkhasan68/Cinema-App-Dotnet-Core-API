@@ -8,5 +8,5 @@ public class Facility : BaseModel
 
     public bool IsActive { get; set; } = true;
 
-    public List<Studio> Studios { get; } = [];
+    public List<StudioFacility> StudioFacilities { get; } = [];
 }
