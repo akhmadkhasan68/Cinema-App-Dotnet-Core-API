@@ -1,3 +1,4 @@
+using CinemaApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaApp.Controllers;
@@ -5,9 +6,9 @@ namespace CinemaApp.Controllers;
 [ApiController]
 [Route("[controller]")]
 public class StudioController : ControllerBase {
-    private static readonly string[] Summaries = new[]
+    private static readonly string[] Name = new[]
     {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+        "Studio 1", "Studio 2", "Studio 3", "Studio 4", "Studio 5"
     };
 
     private readonly ILogger<StudioController> _logger;
@@ -18,13 +19,15 @@ public class StudioController : ControllerBase {
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    public IEnumerable<Studio> Get()
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        return Enumerable.Range(0, 4).Select(index => new Studio
         {
-            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            Id = index,
+            Name = Name[index],
+            Capacity = index * 100,
+            CreatedAt = DateTime.Now,
+            UpdatedAt = DateTime.Now
         })
         .ToArray();
     }
