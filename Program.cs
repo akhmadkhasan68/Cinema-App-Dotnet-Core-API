@@ -1,4 +1,6 @@
 using CinemaApp.Infrastructures.Database;
+using CinemaApp.Interfaces;
+using CinemaApp.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDBContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")).UseSnakeCaseNamingConvention();
 });
+
+builder.Services.AddScoped<IStudioRepository, StudioRepository>();
 
 var app = builder.Build();
 
