@@ -20,7 +20,7 @@ public class StudioController(ILogger<StudioController> logger, IStudioRepositor
         return Ok(ApiResponse<List<StudioResponseDto>>.Success(studios.Select(studio => studio.ToResponse()).ToList()));
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<ApiResponse<StudioResponseDto>>> GetStudio(int id) {
         var studio = await _studioRepository.GetStudio(id);
 
@@ -29,19 +29,23 @@ public class StudioController(ILogger<StudioController> logger, IStudioRepositor
 
     [HttpPost]
     public async Task<ActionResult<ApiResponse<StudioResponseDto>>> AddStudio(StudioRequestDto studioRequestDto) {
+        if (!ModelState.IsValid) {
+            return BadRequest(ModelState);
+        }
+
         var newStudio = await _studioRepository.AddStudio(studioRequestDto.ToModel());
         
         return Ok(ApiResponse<StudioResponseDto>.Success(newStudio.ToResponse()));
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<ActionResult<ApiResponse<StudioResponseDto>>> UpdateStudio(int id, StudioRequestDto studioRequestDto) {
         var updatedStudio = await _studioRepository.UpdateStudio(id, studioRequestDto.ToModel());
         
         return Ok(ApiResponse<StudioResponseDto>.Success(updatedStudio.ToResponse()));
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<bool>>> DeleteStudio(int id) {
         var isDeleted = await _studioRepository.DeleteStudio(id);
         
