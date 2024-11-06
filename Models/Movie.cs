@@ -12,5 +12,5 @@ public class Movie : BaseModel
 
     public string Description { get; set; } = null!;
 
-    public Genre Genre { get; set; } = null!;
+    public Genre Genre { get; set; }
 }

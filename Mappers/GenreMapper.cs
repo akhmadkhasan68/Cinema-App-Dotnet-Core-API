@@ -27,7 +27,17 @@ namespace CinemaApp.Mappers
                 CreatedAt = genreDto.CreatedAt,
                 UpdatedAt = genreDto.UpdatedAt,
             };
-        }     
+        }   
+
+        public static Genre ToModel(this GenreDto genreDto)
+        {
+            return new Genre
+            {
+                Id = genreDto.Id,
+                Name = genreDto.Name,
+                IsActive = genreDto.IsActive,
+            };
+        }  
 
         public static Genre ToModel(this GenreRequestDto genreRequestDto)
         {

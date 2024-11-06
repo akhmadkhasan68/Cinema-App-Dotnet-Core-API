@@ -24,6 +24,11 @@ namespace CinemaApp.Repositories
             return Task.FromResult(data.ToDto());
         }
 
+        public Task<bool> IsExist(int id)
+        {
+            return Task.FromResult(_applicationDBContext.Genres.Any(data => data.Id == id));
+        }
+
         public Task<GenreDto> Create(Genre data)
         {
             _applicationDBContext.Genres.Add(data);
