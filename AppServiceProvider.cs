@@ -1,12 +1,13 @@
 using CinemaApp.Infrastructures.Database;
-using CinemaApp.Interfaces;
 using CinemaApp.Interfaces.Repositories;
+using CinemaApp.Interfaces.Services;
 using CinemaApp.Repositories;
+using CinemaApp.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp
 {
-    public class AppProvider(WebApplicationBuilder builder)
+    public class AppServiceProvider(WebApplicationBuilder builder)
     {
         private readonly WebApplicationBuilder _builder = builder;
 
@@ -27,6 +28,11 @@ namespace CinemaApp
             // Dependency Injection for Repositories
             _builder.Services.AddScoped<IStudioRepository, StudioRepository>();
             _builder.Services.AddScoped<IFacilityRepository, FacilityRepository>();
+            _builder.Services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
+
+            // Dependency Injection for Services
+            _builder.Services.AddScoped<IStudioService, StudioService>();
+            _builder.Services.AddScoped<IFacilityService, FacilityService>();
         }
     }
 }

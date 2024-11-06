@@ -1,6 +1,6 @@
-using CinemaApp.Dtos;
+using CinemaApp.Dtos.Studio;
 using CinemaApp.Infrastructures.Database;
-using CinemaApp.Interfaces;
+using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Mappers;
 using CinemaApp.Models;
 

@@ -1,6 +1,6 @@
 using CinemaApp.Models;
 
-namespace CinemaApp.Dtos
+namespace CinemaApp.Dtos.Studio
 {
     public class StudioDto
     {

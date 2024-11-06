@@ -1,7 +1,5 @@
-using CinemaApp.Dtos;
 using CinemaApp.Dtos.Studio;
 using CinemaApp.Models;
-using CinemaApp.Responses;
 
 namespace CinemaApp.Mappers
 {

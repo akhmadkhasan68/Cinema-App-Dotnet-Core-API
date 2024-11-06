@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Services to The Container
-new AppProvider(builder).ConfigureServices();
+new AppServiceProvider(builder).ConfigureServices();
 
 var app = builder.Build();
 

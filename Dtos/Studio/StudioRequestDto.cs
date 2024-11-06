@@ -12,5 +12,9 @@ namespace CinemaApp.Dtos.Studio
         [Required(ErrorMessage = "Capacity is required")]
         [Range(1, 1000, ErrorMessage = "Capacity must be between 1 and 1000")]
         public int Capacity { get; set; }
+
+        [Required(ErrorMessage = "Facility is required")]
+        [MinLength(1, ErrorMessage = "At least one Facility is required.")]
+        public List<int> FacilityIds { get; set; } = [];
     }
 }

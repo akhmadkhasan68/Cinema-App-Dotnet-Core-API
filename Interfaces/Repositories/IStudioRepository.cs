@@ -1,18 +1,7 @@
-using CinemaApp.Dtos;
+using CinemaApp.Dtos.Studio;
 using CinemaApp.Models;
 
-namespace CinemaApp.Interfaces
+namespace CinemaApp.Interfaces.Repositories
 {
-    public interface IStudioRepository
-    {
-        Task<List<StudioDto>> GetAll();
-
-        Task<StudioDto> FindOne(int id);
-
-        Task<StudioDto> Create(Studio data);
-
-        Task<StudioDto> Update(int id, Studio data);
-
-        Task<bool> Delete(int id);
-    }
+    public interface IStudioRepository : IBaseRepository<StudioDto, Studio> {}
 }
