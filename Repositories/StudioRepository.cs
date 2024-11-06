@@ -10,40 +10,40 @@ namespace CinemaApp.Repositories
     {
         private readonly ApplicationDBContext _context = context;
 
-        public Task<List<StudioDto>> GetStudios()
+        public Task<List<StudioDto>> GetAll()
         {
             var studios = _context.Studios.ToList().Select(studio => studio.ToDto()).ToList();
 
             return Task.FromResult(studios);
         }
 
-        public Task<StudioDto> GetStudio(int id)
+        public Task<StudioDto> FindOne(int id)
         {
             var studio = _context.Studios.Find(id) ?? throw new Exception("Studio not found");
             return Task.FromResult(studio.ToDto());
         }
 
-        public Task<StudioDto> AddStudio(Studio studio)
+        public Task<StudioDto> Create(Studio data)
         {
-            _context.Studios.Add(studio);
+            _context.Studios.Add(data);
             _context.SaveChanges();
 
-            return Task.FromResult(studio.ToDto());
+            return Task.FromResult(data.ToDto());
         }
 
-        public Task<StudioDto> UpdateStudio(int id, Studio studio)
+        public Task<StudioDto> Update(int id, Studio data)
         {
             var existingStudio = _context.Studios.Find(id) ?? throw new Exception("Studio not found");
 
-            existingStudio.Name = studio.Name;
-            existingStudio.Capacity = studio.Capacity;
+            existingStudio.Name = data.Name;
+            existingStudio.Capacity = data.Capacity;
 
             _context.SaveChanges();
 
             return Task.FromResult(existingStudio.ToDto());
         }
 
-        public Task<bool> DeleteStudio(int id)
+        public Task<bool> Delete(int id)
         {
             var studio = _context.Studios.Find(id) ?? throw new Exception("Studio not found");
 

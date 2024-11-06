@@ -1,5 +1,6 @@
 using CinemaApp.Infrastructures.Database;
 using CinemaApp.Interfaces;
+using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,7 @@ namespace CinemaApp
 
             // Dependency Injection for Repositories
             _builder.Services.AddScoped<IStudioRepository, StudioRepository>();
+            _builder.Services.AddScoped<IFacilityRepository, FacilityRepository>();
         }
     }
 }

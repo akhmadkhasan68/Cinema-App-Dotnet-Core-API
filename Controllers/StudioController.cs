@@ -8,21 +8,21 @@ using Microsoft.AspNetCore.Mvc;
 namespace CinemaApp.Controllers;
 
 [ApiController]
-[Route("studios")]
+[Route("api/studios")]
 public class StudioController(ILogger<StudioController> logger, IStudioRepository studioRepository) : ControllerBase {
     private readonly ILogger<StudioController> _logger = logger;
     private readonly IStudioRepository _studioRepository = studioRepository;
 
     [HttpGet]
     public async Task<ActionResult<ApiResponse<List<StudioResponseDto>>>> GetStudios() {
-        var studios = await _studioRepository.GetStudios();
+        var studios = await _studioRepository.GetAll();
 
         return Ok(ApiResponse<List<StudioResponseDto>>.Success(studios.Select(studio => studio.ToResponse()).ToList()));
     }
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<ApiResponse<StudioResponseDto>>> GetStudio(int id) {
-        var studio = await _studioRepository.GetStudio(id);
+        var studio = await _studioRepository.FindOne(id);
 
         return Ok(ApiResponse<StudioResponseDto>.Success(studio.ToResponse()));
     }
@@ -33,21 +33,21 @@ public class StudioController(ILogger<StudioController> logger, IStudioRepositor
             return BadRequest(ModelState);
         }
 
-        var newStudio = await _studioRepository.AddStudio(studioRequestDto.ToModel());
+        var newStudio = await _studioRepository.Create(studioRequestDto.ToModel());
         
         return Ok(ApiResponse<StudioResponseDto>.Success(newStudio.ToResponse()));
     }
 
     [HttpPut("{id:int}")]
     public async Task<ActionResult<ApiResponse<StudioResponseDto>>> UpdateStudio(int id, StudioRequestDto studioRequestDto) {
-        var updatedStudio = await _studioRepository.UpdateStudio(id, studioRequestDto.ToModel());
+        var updatedStudio = await _studioRepository.Update(id, studioRequestDto.ToModel());
         
         return Ok(ApiResponse<StudioResponseDto>.Success(updatedStudio.ToResponse()));
     }
 
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ApiResponse<bool>>> DeleteStudio(int id) {
-        var isDeleted = await _studioRepository.DeleteStudio(id);
+        var isDeleted = await _studioRepository.Delete(id);
         
         return Ok(ApiResponse<bool>.Success(isDeleted));
     }

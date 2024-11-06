@@ -1,9 +1,10 @@
 using System.Net;
+using CinemaApp.Interfaces.Responses;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace CinemaApp.Infrastructures.Responses
 {
-    public class ApiResponse<T>
+    public class ApiResponse<T> : IApiResponse<T>
     {
         public int Status { get; set; }
         public string Message { get; set; } = null!;
