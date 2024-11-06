@@ -29,10 +29,13 @@ namespace CinemaApp
             _builder.Services.AddScoped<IStudioRepository, StudioRepository>();
             _builder.Services.AddScoped<IFacilityRepository, FacilityRepository>();
             _builder.Services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
+            _builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 
             // Dependency Injection for Services
             _builder.Services.AddScoped<IStudioService, StudioService>();
             _builder.Services.AddScoped<IFacilityService, FacilityService>();
+            _builder.Services.AddScoped<IPaymentMethodService, PaymentMethodService>();
+            _builder.Services.AddScoped<IGenreService, GenreService>();
         }
     }
 }
