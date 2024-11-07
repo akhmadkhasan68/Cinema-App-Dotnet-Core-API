@@ -19,9 +19,9 @@ namespace CinemaApp.Dtos.Schedule
 
         public int Price { get; set; }
 
-        public StudioDto? Studio { get; set; } = null!;
+        public StudioDto? Studio { get; set; }
 
-        public MovieDto? Movie { get; set; } = null!;
+        public MovieDto? Movie { get; set; }
 
         public DateTime CreatedAt { get; set; }
 

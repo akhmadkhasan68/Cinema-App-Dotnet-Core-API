@@ -213,5 +213,12 @@ namespace CinemaApp.Repositories
 
             return Task.FromResult(true);
         }
+
+        public async Task<bool> IsExistAsync(int scheduleId)
+        {
+            var data = await _context.Schedules.AnyAsync(schedule => schedule.Id == scheduleId);
+
+            return data;
+        }
     }
 }

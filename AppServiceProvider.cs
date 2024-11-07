@@ -71,6 +71,7 @@ namespace CinemaApp
             _builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
             _builder.Services.AddScoped<IUserRepository, UserRepository>();
             _builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+            _builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 
             // Dependency Injection for Services
             _builder.Services.AddScoped<IStudioService, StudioService>();
@@ -80,6 +81,7 @@ namespace CinemaApp
             _builder.Services.AddScoped<IMovieService, MovieService>();
             _builder.Services.AddScoped<IScheduleService, ScheduleService>();
             _builder.Services.AddScoped<IAuthService, AuthService>();
+            _builder.Services.AddScoped<ITicketService, TicketService>();
 
             // JWT Authentication
             _builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
