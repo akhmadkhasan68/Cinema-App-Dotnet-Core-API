@@ -31,6 +31,7 @@ namespace CinemaApp
             _builder.Services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
             _builder.Services.AddScoped<IGenreRepository, GenreRepository>();
             _builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+            _builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
 
             // Dependency Injection for Services
             _builder.Services.AddScoped<IStudioService, StudioService>();
@@ -38,6 +39,7 @@ namespace CinemaApp
             _builder.Services.AddScoped<IPaymentMethodService, PaymentMethodService>();
             _builder.Services.AddScoped<IGenreService, GenreService>();
             _builder.Services.AddScoped<IMovieService, MovieService>();
+            _builder.Services.AddScoped<IScheduleService, ScheduleService>();
         }
     }
 }

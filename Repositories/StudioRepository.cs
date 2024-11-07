@@ -23,6 +23,11 @@ namespace CinemaApp.Repositories
             return Task.FromResult(studio.ToDto());
         }
 
+        public Task<bool> IsExist(int id)
+        {
+            return Task.FromResult(_context.Studios.Any(studio => studio.Id == id));
+        }
+
         public Task<StudioDto> Create(Studio data)
         {
             _context.Studios.Add(data);

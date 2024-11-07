@@ -63,6 +63,11 @@ namespace CinemaApp.Repositories
             });
         }
 
+        public Task<bool> IsExist(int id)
+        {
+            return Task.FromResult(_applicationDBContext.Movies.Any(movie => movie.Id == id));
+        }
+
         public Task<MovieDto> Create(Movie data)
         {
             _applicationDBContext.Movies.Add(data);
