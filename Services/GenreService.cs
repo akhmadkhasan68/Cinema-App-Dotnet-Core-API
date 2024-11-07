@@ -5,9 +5,7 @@ using CinemaApp.Models;
 
 namespace CinemaApp.Services
 {
-    public class GenreService(
-        IGenreRepository genreRepository,
-    ) : IGenreService
+    public class GenreService(IGenreRepository genreRepository) : IGenreService
     {
         private readonly IGenreRepository _genreRepository = genreRepository;
 
