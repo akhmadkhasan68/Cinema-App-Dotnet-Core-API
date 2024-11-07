@@ -1,10 +1,8 @@
 using CinemaApp.Dtos.Facility;
 using CinemaApp.Infrastructures.Responses;
-using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Interfaces.Responses;
 using CinemaApp.Interfaces.Services;
 using CinemaApp.Mappers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaApp.Controllers
