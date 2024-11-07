@@ -1,4 +1,5 @@
 using CinemaApp;
+using CinemaApp.Infrastructures.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,10 +15,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Middleware
+app.UseMiddleware<LoggingMiddleware>();
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();

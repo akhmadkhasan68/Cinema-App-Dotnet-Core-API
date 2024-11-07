@@ -13,13 +13,11 @@ namespace CinemaApp.Services
 {
     public class AuthService(
         IUserRepository userRepository, 
-        IRoleRepository roleRepository,
-        ILogger<AuthService> logger
+        IRoleRepository roleRepository
     ) : IAuthService
     {
         private readonly IUserRepository _userRepository = userRepository;
         private readonly IRoleRepository _roleRepository = roleRepository;
-        private readonly ILogger<AuthService> _logger = logger;
 
         public async Task<AuthLoginResponseDto> LoginAsync(AuthLoginRequestDto authLoginRequestDto)
         {

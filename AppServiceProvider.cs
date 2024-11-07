@@ -1,5 +1,6 @@
 using System.Text;
 using CinemaApp.Infrastructures.Database;
+using CinemaApp.Infrastructures.Middlewares;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Interfaces.Services;
 using CinemaApp.Repositories;
@@ -57,6 +58,9 @@ namespace CinemaApp
             _builder.Services.AddDbContext<ApplicationDBContext>(options => {
                 options.UseSqlServer(_builder.Configuration.GetConnectionString("DefaultConnection")).UseSnakeCaseNamingConvention();
             });
+
+            // Middleware
+            _builder.Services.AddScoped<LoggingMiddleware>();
 
             // Dependency Injection for Repositories
             _builder.Services.AddScoped<IStudioRepository, StudioRepository>();
