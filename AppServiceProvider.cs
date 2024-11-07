@@ -98,9 +98,9 @@ namespace CinemaApp
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = _builder.Configuration["Jwt:Issuer"],
-                    ValidAudience = _builder.Configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_builder.Configuration["Jwt:Key"]!))
+                    ValidIssuer = AppSettingHelper.GetValue<string>("Jwt:Issuer"),
+                    ValidAudience = AppSettingHelper.GetValue<string>("Jwt:Audience"),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppSettingHelper.GetValue<string>("Jwt:Key")!))
                 };
             });
         }

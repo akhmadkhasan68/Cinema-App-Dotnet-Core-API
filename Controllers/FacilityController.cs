@@ -3,6 +3,7 @@ using CinemaApp.Infrastructures.Responses;
 using CinemaApp.Interfaces.Responses;
 using CinemaApp.Interfaces.Services;
 using CinemaApp.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaApp.Controllers
@@ -14,6 +15,7 @@ namespace CinemaApp.Controllers
         private readonly IFacilityService _facilityService = facilityService;
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IApiResponse<List<FacilityResponseDto>>>> GetFacilities()
         {
             var facilities = await _facilityService.GetAll();
