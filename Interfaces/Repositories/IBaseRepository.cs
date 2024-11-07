@@ -1,14 +1,14 @@
 namespace CinemaApp.Interfaces.Repositories
 {
-    public interface IBaseRepository<TDto, TModel>
+    public interface IBaseRepository<TResponse, TParamData>
     {
-        Task<List<TDto>> GetAll();
+        Task<List<TResponse>> GetAll();
 
-        Task<TDto> FindOne(int id);
+        Task<TResponse> FindOne(int id);
 
-        Task<TDto> Create(TModel data);
+        Task<TResponse> Create(TParamData data);
 
-        Task<TDto> Update(int id, TModel data);
+        Task<TResponse> Update(int id, TParamData data);
 
         Task<bool> Delete(int id);
     }

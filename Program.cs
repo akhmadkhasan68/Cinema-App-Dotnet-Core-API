@@ -1,9 +1,4 @@
-using System.Net.Http.Headers;
 using CinemaApp;
-using CinemaApp.Infrastructures.Database;
-using CinemaApp.Interfaces;
-using CinemaApp.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +15,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
