@@ -4,7 +4,10 @@ using CinemaApp.Infrastructures.Middlewares;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Services to The Container
-new AppServiceProvider(builder).ConfigureServices();
+var appServiceProvider = new AppServiceProvider(builder);
+appServiceProvider.InitServiceProvider();
+appServiceProvider.RegisterServices();
+appServiceProvider.RegisterRepository();
 
 var app = builder.Build();
 

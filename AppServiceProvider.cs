@@ -2,12 +2,6 @@ using System.Text;
 using CinemaApp.Infrastructures.Database;
 using CinemaApp.Infrastructures.Jobs.TicketExpired;
 using CinemaApp.Infrastructures.Middlewares;
-using CinemaApp.Infrastructures.Queue.Email;
-using CinemaApp.Interfaces.Repositories;
-using CinemaApp.Interfaces.Services;
-using CinemaApp.Repositories;
-using CinemaApp.Services;
-using CinemaApp.Utils.Constans;
 using CinemaApp.Utils.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -17,12 +11,12 @@ using Quartz;
 
 namespace CinemaApp
 {
-    public class AppServiceProvider(WebApplicationBuilder builder)
+    public partial class AppServiceProvider(WebApplicationBuilder builder)
     {
         private readonly WebApplicationBuilder _builder = builder;
 
         // Add your services here
-        public void ConfigureServices()
+        public void InitServiceProvider()
         {
             _builder.Services.AddControllers();
 
@@ -65,29 +59,6 @@ namespace CinemaApp
 
             // Middleware
             _builder.Services.AddScoped<LoggingMiddleware>();
-
-            // Dependency Injection for Repositories
-            _builder.Services.AddScoped<IStudioRepository, StudioRepository>();
-            _builder.Services.AddScoped<IFacilityRepository, FacilityRepository>();
-            _builder.Services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
-            _builder.Services.AddScoped<IGenreRepository, GenreRepository>();
-            _builder.Services.AddScoped<IMovieRepository, MovieRepository>();
-            _builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
-            _builder.Services.AddScoped<IUserRepository, UserRepository>();
-            _builder.Services.AddScoped<IRoleRepository, RoleRepository>();
-            _builder.Services.AddScoped<ITicketRepository, TicketRepository>();
-
-            // Dependency Injection for Services
-            _builder.Services.AddScoped<IStudioService, StudioService>();
-            _builder.Services.AddScoped<IFacilityService, FacilityService>();
-            _builder.Services.AddScoped<IPaymentMethodService, PaymentMethodService>();
-            _builder.Services.AddScoped<IGenreService, GenreService>();
-            _builder.Services.AddScoped<IMovieService, MovieService>();
-            _builder.Services.AddScoped<IScheduleService, ScheduleService>();
-            _builder.Services.AddScoped<IAuthService, AuthService>();
-            _builder.Services.AddScoped<ITicketService, TicketService>();
-            _builder.Services.AddScoped<IEmailService, EmailService>();
-            _builder.Services.AddScoped<IEmailQueue, InMemoryEmailQueue>();
 
             // Add Quartz Scheduler Service for Cron Job
             _builder.Services.AddQuartz(q =>
