@@ -1,15 +1,18 @@
 using System.Text;
 using CinemaApp.Infrastructures.Database;
+using CinemaApp.Infrastructures.Jobs.TicketExpired;
 using CinemaApp.Infrastructures.Middlewares;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Interfaces.Services;
 using CinemaApp.Repositories;
 using CinemaApp.Services;
+using CinemaApp.Utils.Constans;
 using CinemaApp.Utils.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Quartz;
 
 namespace CinemaApp
 {
@@ -82,6 +85,27 @@ namespace CinemaApp
             _builder.Services.AddScoped<IScheduleService, ScheduleService>();
             _builder.Services.AddScoped<IAuthService, AuthService>();
             _builder.Services.AddScoped<ITicketService, TicketService>();
+
+            // Add Quartz Scheduler Service for Cron Job
+            _builder.Services.AddQuartz(q =>
+            {
+                q.UseMicrosoftDependencyInjectionJobFactory();
+
+                var jobKey = new JobKey("TicketExpiredJob", "Ticket");
+
+                // Configure job
+                q.AddJob<TicketExpiredJob>(j => j.WithIdentity(jobKey));
+
+                // Configure trigger
+                q.AddTrigger(t => t
+                    .ForJob(jobKey)
+                    .WithIdentity("TicketExpiredJobTrigger")
+                    .WithCronSchedule("0/5 * * * * ?") // Run every 5 seconds
+                );
+            });
+
+            _builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+
 
             // JWT Authentication
             _builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)

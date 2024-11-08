@@ -145,3 +145,6 @@
 /Users/akhmadkhasanabdullah/Documents/Dev/Other/CinemaApp/bin/Debug/net8.0/BCrypt.Net-Next.dll
 /Users/akhmadkhasanabdullah/Documents/Dev/Other/CinemaApp/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /Users/akhmadkhasanabdullah/Documents/Dev/Other/CinemaApp/bin/Debug/net8.0/Microsoft.Bcl.TimeProvider.dll
+/Users/akhmadkhasanabdullah/Documents/Dev/Other/CinemaApp/bin/Debug/net8.0/Quartz.dll
+/Users/akhmadkhasanabdullah/Documents/Dev/Other/CinemaApp/bin/Debug/net8.0/Quartz.Extensions.DependencyInjection.dll
+/Users/akhmadkhasanabdullah/Documents/Dev/Other/CinemaApp/bin/Debug/net8.0/Quartz.Extensions.Hosting.dll
