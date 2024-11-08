@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Schedule;
+using CinemaApp.Infrastructures.Exceptions;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Interfaces.Services;
 using CinemaApp.Mappers;
@@ -26,11 +27,11 @@ namespace CinemaApp.Services
         {
             var IsMovieExist = await _movieRepository.IsExist(data.MovieId);
 
-            if (!IsMovieExist) throw new Exception("Movie not found");
+            if (!IsMovieExist) throw new DataNotFoundException("Movie not found");
 
             var IsStudioExist = await _studioRepository.IsExist(data.StudioId);
 
-            if (!IsStudioExist) throw new Exception("Studio not found");
+            if (!IsStudioExist) throw new DataNotFoundException("Studio not found");
 
             return await _scheduleRepository.CreateAsync(data.ToModel());
         }
@@ -39,11 +40,11 @@ namespace CinemaApp.Services
         {
             var IsMovieExist = await _movieRepository.IsExist(data.MovieId);
 
-            if (!IsMovieExist) throw new Exception("Movie not found");
+            if (!IsMovieExist) throw new DataNotFoundException("Movie not found");
 
             var IsStudioExist = await _studioRepository.IsExist(data.StudioId);
 
-            if (!IsStudioExist) throw new Exception("Studio not found");
+            if (!IsStudioExist) throw new DataNotFoundException("Studio not found");
 
             return await _scheduleRepository.UpdateAsync(id, data.ToModel());
         }

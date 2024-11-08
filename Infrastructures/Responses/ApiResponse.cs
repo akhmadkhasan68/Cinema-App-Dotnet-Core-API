@@ -8,6 +8,8 @@ namespace CinemaApp.Infrastructures.Responses
         public int Status { get; set; }
         public string Message { get; set; } = null!;
 
+        public List<string>? Errors { get; set; }
+
         public static ApiResponse Success(string message = "OK")
         {
             return new ApiResponse
@@ -17,12 +19,13 @@ namespace CinemaApp.Infrastructures.Responses
             };
         }
 
-        public static ApiResponse Error(string message, int statusCode = (int)HttpStatusCode.InternalServerError)
+        public static ApiResponse Error(string message, int statusCode = (int)HttpStatusCode.InternalServerError, List<string>? errors = null)
         {
             return new ApiResponse
             {
                 Status = statusCode == 0 ? (int)HttpStatusCode.InternalServerError : statusCode,
-                Message = message
+                Message = message,
+                Errors = errors
             };
         }
     }

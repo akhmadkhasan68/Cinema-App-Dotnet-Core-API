@@ -8,8 +8,13 @@ var appServiceProvider = new AppServiceProvider(builder);
 appServiceProvider.InitServiceProvider();
 appServiceProvider.RegisterServices();
 appServiceProvider.RegisterRepository();
+appServiceProvider.RegisterExceptionHandler();
 
 var app = builder.Build();
+
+// Exception Handling
+app.UseExceptionHandler();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using CinemaApp.Dtos.Auth;
 using CinemaApp.Dtos.User;
+using CinemaApp.Infrastructures.Exceptions;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Interfaces.Services;
 using CinemaApp.Mappers;
@@ -28,7 +29,7 @@ namespace CinemaApp.Services
 
             if (!checkPasswordIsValid)
             {
-                throw new Exception("Password is incorrect");
+                throw new Infrastructures.Exceptions.UnauthorizedAccessException("Invalid credentials");
             }
 
             return new AuthLoginResponseDto
@@ -44,14 +45,14 @@ namespace CinemaApp.Services
 
             if (!roleIsExist)
             {
-                throw new Exception("Role not found");
+                throw new DataNotFoundException("Role not found");
             }
 
             var findUserByEmail = await _userRepository.FindByEmailAsync(userRequestDto.Email);
 
             if (findUserByEmail != null)
             {
-                throw new Exception("Email already exists");
+                throw new DataNotFoundException("Email already exists");
             }
 
             await _userRepository.CreateAsync(userRequestDto.ToModel());

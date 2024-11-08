@@ -4,6 +4,7 @@ using CinemaApp.Dtos.Movie;
 using CinemaApp.Dtos.Schedule;
 using CinemaApp.Dtos.Studio;
 using CinemaApp.Infrastructures.Database;
+using CinemaApp.Infrastructures.Exceptions;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Models;
 using Microsoft.EntityFrameworkCore;
@@ -132,7 +133,7 @@ namespace CinemaApp.Repositories
         public Task<bool> Delete(int id)
         {
             var existingData = _context.Schedules
-                                .FirstOrDefault(data => data.Id == id) ?? throw new Exception("Data not found");
+                                .FirstOrDefault(data => data.Id == id) ?? throw new DataNotFoundException("Data not found");
 
             _context.Schedules.Remove(existingData);
             _context.SaveChanges();

@@ -2,6 +2,7 @@ using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Genre;
 using CinemaApp.Dtos.Movie;
 using CinemaApp.Infrastructures.Database;
+using CinemaApp.Infrastructures.Exceptions;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Models;
 using Microsoft.EntityFrameworkCore;
@@ -43,7 +44,7 @@ namespace CinemaApp.Repositories
             var movie = _applicationDBContext.Movies
                         .Include(movie => movie.Genre)
                         .AsSplitQuery()
-                        .FirstOrDefault(movie => movie.Id == id) ?? throw new Exception("Movie not found");
+                        .FirstOrDefault(movie => movie.Id == id) ?? throw new DataNotFoundException("Movie not found");
 
             return Task.FromResult(new MovieDto
             {
@@ -82,7 +83,7 @@ namespace CinemaApp.Repositories
             var existingData = await _applicationDBContext.Movies
                                 .Include(movie => movie.Genre)
                                 .AsSplitQuery()
-                                .FirstOrDefaultAsync(movie => movie.Id == id) ?? throw new Exception("Movie not found");
+                                .FirstOrDefaultAsync(movie => movie.Id == id) ?? throw new DataNotFoundException("Movie not found");
 
             existingData.Title = data.Title;
             existingData.DurationInMinutes = data.DurationInMinutes;
@@ -96,7 +97,7 @@ namespace CinemaApp.Repositories
 
         public Task<bool> Delete(int id)
         {
-            var movie = _applicationDBContext.Movies.Find(id) ?? throw new Exception("Movie not found");
+            var movie = _applicationDBContext.Movies.Find(id) ?? throw new DataNotFoundException("Movie not found");
 
             _applicationDBContext.Movies.Remove(movie);
             _applicationDBContext.SaveChanges();

@@ -1,5 +1,6 @@
 using CinemaApp.Dtos.Auth;
 using CinemaApp.Dtos.User;
+using CinemaApp.Infrastructures.Exceptions;
 using CinemaApp.Infrastructures.Responses;
 using CinemaApp.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ namespace CinemaApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                throw new ValidationException(ModelState);
             }
 
             var loginResponse = await _authService.LoginAsync(authLoginRequestDto);

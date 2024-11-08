@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.PaymentMethod;
 using CinemaApp.Infrastructures.Database;
+using CinemaApp.Infrastructures.Exceptions;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Mappers;
 using CinemaApp.Models;
@@ -20,7 +21,7 @@ namespace CinemaApp.Repositories
 
         public Task<PaymentMethodDto> FindOne(int id)
         {
-            var data = _applicationDBContext.PaymentMethods.Find(id) ?? throw new Exception("Data not found");
+            var data = _applicationDBContext.PaymentMethods.Find(id) ?? throw new DataNotFoundException("Data not found");
             return Task.FromResult(data.ToDto());
         }
 
@@ -41,7 +42,7 @@ namespace CinemaApp.Repositories
 
         public async Task<AsyncVoidMethodBuilder> UpdateAsync(int id, PaymentMethod data)
         {
-            var existingData = await _applicationDBContext.PaymentMethods.FindAsync(id) ?? throw new Exception("Data not found");
+            var existingData = await _applicationDBContext.PaymentMethods.FindAsync(id) ?? throw new DataNotFoundException("Data not found");
 
             existingData.Name = data.Name;
             existingData.IsActive = data.IsActive;
@@ -53,7 +54,7 @@ namespace CinemaApp.Repositories
 
         public Task<bool> Delete(int id)
         {
-            var data = _applicationDBContext.PaymentMethods.Find(id) ?? throw new Exception("Data not found");
+            var data = _applicationDBContext.PaymentMethods.Find(id) ?? throw new DataNotFoundException("Data not found");
 
             _applicationDBContext.PaymentMethods.Remove(data);
             _applicationDBContext.SaveChanges();

@@ -60,6 +60,8 @@ namespace CinemaApp
             // Middleware
             _builder.Services.AddScoped<LoggingMiddleware>();
 
+            // Exception Handler
+
             // Add Quartz Scheduler Service for Cron Job
             _builder.Services.AddQuartz(q =>
             {
@@ -77,7 +79,6 @@ namespace CinemaApp
                     .WithCronSchedule("0/5 * * * * ?") // Run every 5 seconds
                 );
             });
-
             _builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 
@@ -87,9 +88,7 @@ namespace CinemaApp
                                     .AddEnvironmentVariables();
 
             var configuration = _builder.Configuration;
-
             AppSettingHelper.Initialize(configuration);
-
             _builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

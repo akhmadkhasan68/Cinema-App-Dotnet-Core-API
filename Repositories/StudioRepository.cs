@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Studio;
 using CinemaApp.Infrastructures.Database;
+using CinemaApp.Infrastructures.Exceptions;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Mappers;
 using CinemaApp.Models;
@@ -20,7 +21,7 @@ namespace CinemaApp.Repositories
 
         public Task<StudioDto> FindOne(int id)
         {
-            var studio = _context.Studios.Find(id) ?? throw new Exception("Studio not found");
+            var studio = _context.Studios.Find(id) ?? throw new DataNotFoundException("Studio not found");
             return Task.FromResult(studio.ToDto());
         }
 
@@ -39,7 +40,7 @@ namespace CinemaApp.Repositories
 
         public async Task<AsyncVoidMethodBuilder> UpdateAsync(int id, Studio data)
         {
-            var existingStudio = await _context.Studios.FindAsync(id) ?? throw new Exception("Studio not found");
+            var existingStudio = await _context.Studios.FindAsync(id) ?? throw new DataNotFoundException("Studio not found");
 
             existingStudio.Name = data.Name;
             existingStudio.Capacity = data.Capacity;
@@ -51,7 +52,7 @@ namespace CinemaApp.Repositories
 
         public Task<bool> Delete(int id)
         {
-            var studio = _context.Studios.Find(id) ?? throw new Exception("Studio not found");
+            var studio = _context.Studios.Find(id) ?? throw new DataNotFoundException("Studio not found");
 
             _context.Studios.Remove(studio);
             _context.SaveChanges();

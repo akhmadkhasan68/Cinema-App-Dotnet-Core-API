@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Ticket;
 using CinemaApp.Infrastructures.Database;
+using CinemaApp.Infrastructures.Exceptions;
 using CinemaApp.Infrastructures.Queue.Email;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Interfaces.Services;
@@ -37,14 +38,14 @@ namespace CinemaApp.Services
 
             if (!scheduleIsExist)
             {
-                throw new Exception("Schedule not found");
+                throw new DataNotFoundException("Schedule not found");
             }
 
             var paymentMethodIsExist = await _paymentMethodRepository.IsExistAsync(ticketBuyRequestDto.PaymentMethodId);
 
             if (!paymentMethodIsExist)
             {
-                throw new Exception("Payment method not found");
+                throw new DataNotFoundException("Payment method not found");
             }
 
 

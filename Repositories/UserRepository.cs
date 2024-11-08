@@ -2,6 +2,7 @@ using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Role;
 using CinemaApp.Dtos.User;
 using CinemaApp.Infrastructures.Database;
+using CinemaApp.Infrastructures.Exceptions;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Mappers;
 using CinemaApp.Models;
@@ -19,7 +20,7 @@ namespace CinemaApp.Repositories
                         .Where(user => user.Email == email)
                         .Include(user => user.Role)
                         .AsSplitQuery()
-                        .FirstOrDefaultAsync() ?? throw new Exception("User not found");
+                        .FirstOrDefaultAsync() ?? throw new DataNotFoundException("User not found");
 
             return new UserDto
             {
