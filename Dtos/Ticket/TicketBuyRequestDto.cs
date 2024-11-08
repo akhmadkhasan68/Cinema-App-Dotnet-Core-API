@@ -9,5 +9,8 @@ namespace CinemaApp.Dtos.Ticket
 
         [Required(ErrorMessage = "Seat number is required")]
         public int SeatNumber { get; set; }
+
+        [Required(ErrorMessage = "Payment method is required")]
+        public int PaymentMethodId { get; set; }
     }
 }

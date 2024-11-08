@@ -15,6 +15,7 @@ namespace CinemaApp
             _builder.Services.AddScoped<IUserRepository, UserRepository>();
             _builder.Services.AddScoped<IRoleRepository, RoleRepository>();
             _builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+            _builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
         }
     }
 }

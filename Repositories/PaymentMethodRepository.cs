@@ -24,6 +24,13 @@ namespace CinemaApp.Repositories
             return Task.FromResult(data.ToDto());
         }
 
+        public async Task<bool> IsExistAsync(int id)
+        {
+            var data = await _applicationDBContext.PaymentMethods.FindAsync(id);
+
+            return data != null;
+        }
+
         public async Task<AsyncVoidMethodBuilder> CreateAsync(PaymentMethod data)
         {
             await _applicationDBContext.PaymentMethods.AddAsync(data);

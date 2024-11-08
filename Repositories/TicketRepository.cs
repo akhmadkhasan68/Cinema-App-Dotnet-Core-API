@@ -12,12 +12,12 @@ namespace CinemaApp.Repositories
     {
         private readonly ApplicationDBContext _applicationDBContext = applicationDBContext;
 
-        public async Task<AsyncVoidMethodBuilder> CreateAsync(Ticket ticket)
+        public async Task<TicketDto> CreateAsync(Ticket ticket)
         {
-            await _applicationDBContext.Tickets.AddAsync(ticket);
+            var newTicket = await _applicationDBContext.Tickets.AddAsync(ticket);
             await _applicationDBContext.SaveChangesAsync();
 
-            return AsyncVoidMethodBuilder.Create();
+            return newTicket.Entity.ToDto();
         }
     }
 }
