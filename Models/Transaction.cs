@@ -4,8 +4,6 @@ namespace CinemaApp.Models;
 
 public class Transaction : BaseModel
 {
-    public int Id { get; set; }
-
     public int TicketId { get; set; }
 
     public int PaymentMethodId { get; set; }

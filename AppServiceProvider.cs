@@ -53,7 +53,7 @@ namespace CinemaApp
             });
 
             // Add database context
-            _builder.Services.AddDbContext<ApplicationDBContext>(options => {
+            _builder.Services.AddDbContextPool<ApplicationDBContext>(options => {
                 options.UseSqlServer(_builder.Configuration.GetConnectionString("DefaultConnection")).UseSnakeCaseNamingConvention();
             });
 

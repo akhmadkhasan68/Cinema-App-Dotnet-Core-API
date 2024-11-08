@@ -2,8 +2,6 @@ namespace CinemaApp.Models;
 
 public class Schedule : BaseModel
 {
-    public int Id { get; set; }
-
     public int StudioId { get; set; }
 
     public int MovieId { get; set; }

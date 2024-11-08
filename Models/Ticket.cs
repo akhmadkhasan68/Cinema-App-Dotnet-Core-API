@@ -4,8 +4,6 @@ namespace CinemaApp.Models;
 
 public class Ticket : BaseModel
 {
-    public int Id { get; set; }
-
     public int ScheduleId { get; set; }
 
     public int UserId { get; set; }
