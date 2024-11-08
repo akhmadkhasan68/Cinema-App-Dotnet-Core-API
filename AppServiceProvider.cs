@@ -2,6 +2,7 @@ using System.Text;
 using CinemaApp.Infrastructures.Database;
 using CinemaApp.Infrastructures.Jobs.TicketExpired;
 using CinemaApp.Infrastructures.Middlewares;
+using CinemaApp.Infrastructures.Queue.Email;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Interfaces.Services;
 using CinemaApp.Repositories;
@@ -85,6 +86,8 @@ namespace CinemaApp
             _builder.Services.AddScoped<IScheduleService, ScheduleService>();
             _builder.Services.AddScoped<IAuthService, AuthService>();
             _builder.Services.AddScoped<ITicketService, TicketService>();
+            _builder.Services.AddScoped<IEmailService, EmailService>();
+            _builder.Services.AddScoped<IEmailQueue, InMemoryEmailQueue>();
 
             // Add Quartz Scheduler Service for Cron Job
             _builder.Services.AddQuartz(q =>

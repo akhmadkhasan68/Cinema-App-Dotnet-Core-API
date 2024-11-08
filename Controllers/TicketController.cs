@@ -23,6 +23,11 @@ namespace CinemaApp.Controllers
         [Authorize]
         public async Task<ActionResult<IApiResponse<TicketResponseDto>>> BuyTicketAsync([FromBody] TicketBuyRequestDto ticketBuyRequestDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var userID = 2; // TODO: get userId from token
             var ticket = await _ticketService.BuyTicketAsync(ticketBuyRequestDto, userID); 
 
