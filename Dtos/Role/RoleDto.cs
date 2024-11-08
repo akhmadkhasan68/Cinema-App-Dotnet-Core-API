@@ -10,7 +10,7 @@ namespace CinemaApp.Dtos.Role
 
         public string Name { get; set; } = null!;
 
-        public List<RolePermissionDto> RolePermissions { get; set; } = [];
+        public ICollection<RolePermissionDto> RolePermissions { get; set; } = [];
 
         public DateTime CreatedAt { get; set; }
 

@@ -1,7 +1,6 @@
 using CinemaApp.Dtos.Auth;
 using CinemaApp.Dtos.User;
 using CinemaApp.Infrastructures.Responses;
-using CinemaApp.Interfaces.Responses;
 using CinemaApp.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +13,7 @@ namespace CinemaApp.Controllers
         private readonly IAuthService _authService = authService;
 
         [HttpPost("login")]
-        public async Task<ActionResult<IApiResponse<AuthLoginResponseDto>>> Login([FromBody] AuthLoginRequestDto authLoginRequestDto)
+        public async Task<ActionResult<ApiResponse<AuthLoginResponseDto>>> Login([FromBody] AuthLoginRequestDto authLoginRequestDto)
         {
             if (!ModelState.IsValid)
             {
@@ -29,11 +28,11 @@ namespace CinemaApp.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<IApiResponse<UserResponseDto>>> Register([FromBody]  UserRequestDto userRequestDto)
+        public async Task<ActionResult<ApiResponse>> Register([FromBody]  UserRequestDto userRequestDto)
         {
-            var registerResponse = await _authService.RegisterAsync(userRequestDto);
+            await _authService.RegisterAsync(userRequestDto);
 
-            return Ok(ApiResponse<UserResponseDto>.Success(registerResponse));
+            return Ok(ApiResponse.Success("Success register"));
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Genre;
 using CinemaApp.Dtos.Movie;
 using CinemaApp.Infrastructures.Database;
@@ -68,66 +69,29 @@ namespace CinemaApp.Repositories
             return Task.FromResult(_applicationDBContext.Movies.Any(movie => movie.Id == id));
         }
 
-        public Task<MovieDto> Create(Movie data)
+        public async Task<AsyncVoidMethodBuilder> CreateAsync(Movie data)
         {
-            _applicationDBContext.Movies.Add(data);
-            _applicationDBContext.SaveChanges();
+            await _applicationDBContext.Movies.AddAsync(data);
+            await _applicationDBContext.SaveChangesAsync();
 
-            var insertedData = _applicationDBContext.Movies
-                                .Include(movie => movie.Genre)
-                                .AsSplitQuery()
-                                .FirstOrDefault(movie => movie.Id == data.Id) ?? throw new Exception("Movie not found");
-
-            return Task.FromResult(new MovieDto
-            {
-                Id = insertedData.Id,
-                Title = insertedData.Title,
-                DurationInMinutes = insertedData.DurationInMinutes,
-                Description = insertedData.Description,
-                Genre = new GenreDto
-                {
-                    Id = insertedData.Genre.Id,
-                    Name = insertedData.Genre.Name,
-                    IsActive = insertedData.Genre.IsActive,
-                    CreatedAt = insertedData.Genre.CreatedAt,
-                    UpdatedAt = insertedData.Genre.UpdatedAt
-                },
-                CreatedAt = insertedData.CreatedAt,
-                UpdatedAt = insertedData.UpdatedAt
-            });
+            return AsyncVoidMethodBuilder.Create();
         }
 
-        public Task<MovieDto> Update(int id, Movie data)
+        public async Task<AsyncVoidMethodBuilder> UpdateAsync(int id, Movie data)
         {
-            var existingData = _applicationDBContext.Movies
+            var existingData = await _applicationDBContext.Movies
                                 .Include(movie => movie.Genre)
                                 .AsSplitQuery()
-                                .FirstOrDefault(movie => movie.Id == id) ?? throw new Exception("Movie not found");
+                                .FirstOrDefaultAsync(movie => movie.Id == id) ?? throw new Exception("Movie not found");
 
             existingData.Title = data.Title;
             existingData.DurationInMinutes = data.DurationInMinutes;
             existingData.Description = data.Description;
             existingData.Genre = data.Genre;
 
-            _applicationDBContext.SaveChanges();
+            await _applicationDBContext.SaveChangesAsync();
 
-            return Task.FromResult(new MovieDto
-            {
-                Id = existingData.Id,
-                Title = existingData.Title,
-                DurationInMinutes = existingData.DurationInMinutes,
-                Description = existingData.Description,
-                Genre = new GenreDto
-                {
-                    Id = existingData.Genre.Id,
-                    Name = existingData.Genre.Name,
-                    IsActive = existingData.Genre.IsActive,
-                    CreatedAt = existingData.Genre.CreatedAt,
-                    UpdatedAt = existingData.Genre.UpdatedAt
-                },
-                CreatedAt = existingData.CreatedAt,
-                UpdatedAt = existingData.UpdatedAt
-            });
+            return AsyncVoidMethodBuilder.Create();
         }
 
         public Task<bool> Delete(int id)

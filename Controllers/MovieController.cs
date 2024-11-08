@@ -1,6 +1,5 @@
 using CinemaApp.Dtos.Movie;
 using CinemaApp.Infrastructures.Responses;
-using CinemaApp.Interfaces.Responses;
 using CinemaApp.Interfaces.Services;
 using CinemaApp.Mappers;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +13,7 @@ namespace CinemaApp.Controllers
         private readonly IMovieService _movieService = movieService;
 
         [HttpGet]
-        public async Task<ActionResult<IApiResponse<List<MovieResponseDto>>>> GetMovies()
+        public async Task<ActionResult<ApiResponse<List<MovieResponseDto>>>> GetMovies()
         {
             var movies = await _movieService.GetAll();
 
@@ -22,7 +21,7 @@ namespace CinemaApp.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<IApiResponse<MovieResponseDto>>> GetMovie([FromRoute] int id)
+        public async Task<ActionResult<ApiResponse<MovieResponseDto>>> GetMovie([FromRoute] int id)
         {
             var movie = await _movieService.FindOne(id);
 
@@ -30,28 +29,28 @@ namespace CinemaApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<IApiResponse<MovieResponseDto>>> AddMovie([FromBody] MovieRequestDto movieRequestDto)
+        public async Task<ActionResult<ApiResponse>> AddMovie([FromBody] MovieRequestDto movieRequestDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var newMovie = await _movieService.Create(movieRequestDto);
+            await _movieService.CreateAsync(movieRequestDto);
 
-            return Ok(ApiResponse<MovieResponseDto>.Success(newMovie.ToResponse()));
+            return Ok(ApiResponse.Success("Movie created successfully"));
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<IApiResponse<MovieResponseDto>>> UpdateMovie([FromRoute] int id, [FromBody] MovieRequestDto movieRequestDto)
+        public async Task<ActionResult<ApiResponse>> UpdateMovie([FromRoute] int id, [FromBody] MovieRequestDto movieRequestDto)
         {
-            var updatedMovie = await _movieService.Update(id, movieRequestDto);
+            await _movieService.UpdateAsync(id, movieRequestDto);
 
-            return Ok(ApiResponse<MovieResponseDto>.Success(updatedMovie.ToResponse()));
+            return Ok(ApiResponse.Success("Movie updated successfully"));
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<IApiResponse<bool>>> DeleteMovie([FromRoute] int id)
+        public async Task<ActionResult<ApiResponse<bool>>> DeleteMovie([FromRoute] int id)
         {
             var isDeleted = await _movieService.Delete(id);
 

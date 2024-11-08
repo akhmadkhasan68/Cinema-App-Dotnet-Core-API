@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Text;
 using CinemaApp.Dtos.Auth;
@@ -37,7 +38,7 @@ namespace CinemaApp.Services
             };
         }
 
-        public async Task<UserResponseDto> RegisterAsync(UserRequestDto userRequestDto)
+        public async Task<AsyncVoidMethodBuilder> RegisterAsync(UserRequestDto userRequestDto)
         {
             var roleIsExist = await _roleRepository.IsExist(userRequestDto.RoleId);
 
@@ -53,9 +54,9 @@ namespace CinemaApp.Services
                 throw new Exception("Email already exists");
             }
 
-            var user = await _userRepository.CreateAsync(userRequestDto.ToModel());
+            await _userRepository.CreateAsync(userRequestDto.ToModel());
 
-            return user.ToResponse();
+            return AsyncVoidMethodBuilder.Create();
         }
 
         private static string GenerateJwtToken(UserDto user)

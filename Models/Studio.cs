@@ -5,5 +5,5 @@ public class Studio : BaseModel
 
     public int Capacity { get; set; }
 
-    public List<StudioFacility> StudioFacilities { get; } = [];
+    public ICollection<StudioFacility> StudioFacilities { get; } = [];
 }

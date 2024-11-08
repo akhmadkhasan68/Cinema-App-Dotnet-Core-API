@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Auth;
 using CinemaApp.Dtos.User;
 
@@ -7,6 +8,6 @@ namespace CinemaApp.Interfaces.Services
     {
         public Task<AuthLoginResponseDto> LoginAsync(AuthLoginRequestDto authLoginRequestDto);
 
-        public Task<UserResponseDto> RegisterAsync(UserRequestDto userRequestDto);
+        public Task<AsyncVoidMethodBuilder> RegisterAsync(UserRequestDto userRequestDto);
     }
 }

@@ -6,7 +6,7 @@ public class Role : BaseModel
     
     public string Name { get; set; } = null!;
 
-    public List<RolePermission> RolePermissions { get; set; } = [];
+    public ICollection<RolePermission> RolePermissions { get; set; } = [];
 
-    public List<User> Users { get; } = [];
+    public ICollection<User> Users { get; } = [];
 }

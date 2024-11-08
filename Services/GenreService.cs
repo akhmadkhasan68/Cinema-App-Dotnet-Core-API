@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Genre;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Interfaces.Services;
@@ -19,14 +20,14 @@ namespace CinemaApp.Services
             return _genreRepository.FindOne(id);
         }
 
-        public Task<GenreDto> Create(Genre data)
+        public async Task<AsyncVoidMethodBuilder> CreateAsync(Genre data)
         {
-            return _genreRepository.Create(data);
+            return await _genreRepository.CreateAsync(data);
         }
 
-        public Task<GenreDto> Update(int id, Genre data)
+        public async Task<AsyncVoidMethodBuilder> UpdateAsync(int id, Genre data)
         {
-            return _genreRepository.Update(id, data);
+            return await _genreRepository.UpdateAsync(id, data);
         }
 
         public Task<bool> Delete(int id)

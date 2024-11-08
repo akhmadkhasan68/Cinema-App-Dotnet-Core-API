@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CinemaApp.Dtos.Facility;
 using CinemaApp.Interfaces.Repositories;
@@ -23,14 +24,14 @@ namespace CinemaApp.Services
             return _facilityRepository.FindOne(id);
         }
 
-        public Task<FacilityDto> Create(Facility data)
+        public async Task<AsyncVoidMethodBuilder> CreateAsync(Facility data)
         {
-            return _facilityRepository.Create(data);
+            return await _facilityRepository.CreateAsync(data);
         }
 
-        public Task<FacilityDto> Update(int id, Facility data)
+        public async Task<AsyncVoidMethodBuilder> UpdateAsync(int id, Facility data)
         {
-            return _facilityRepository.Update(id, data);
+            return await _facilityRepository.UpdateAsync(id, data);
         }
 
         public Task<bool> Delete(int id)

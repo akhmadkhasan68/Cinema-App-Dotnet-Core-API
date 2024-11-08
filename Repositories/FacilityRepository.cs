@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Facility;
 using CinemaApp.Infrastructures.Database;
 using CinemaApp.Interfaces.Repositories;
@@ -23,24 +24,24 @@ namespace CinemaApp.Repositories
             return Task.FromResult(data.ToDto());
         }
 
-        public Task<FacilityDto> Create(Facility data)
+        public async Task<AsyncVoidMethodBuilder> CreateAsync(Facility data)
         {
-            _context.Facilities.Add(data);
-            _context.SaveChanges();
+            await _context.Facilities.AddAsync(data);
+            await _context.SaveChangesAsync();
 
-            return Task.FromResult(data.ToDto());
+            return AsyncVoidMethodBuilder.Create();
         }
 
-        public Task<FacilityDto> Update(int id, Facility data)
+        public async Task<AsyncVoidMethodBuilder> UpdateAsync(int id, Facility data)
         {
-            var existingStudio = _context.Facilities.Find(id) ?? throw new Exception("Facility not found");
+            var existingStudio = await _context.Facilities.FindAsync(id) ?? throw new Exception("Facility not found");
 
             existingStudio.Name = data.Name;
             existingStudio.IsActive = data.IsActive;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            return Task.FromResult(existingStudio.ToDto());
+            return AsyncVoidMethodBuilder.Create();
         }
 
         public Task<bool> Delete(int id)

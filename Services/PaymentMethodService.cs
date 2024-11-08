@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.PaymentMethod;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Interfaces.Services;
@@ -19,14 +20,14 @@ namespace CinemaApp.Services
             return _paymentMethodRepository.FindOne(id);
         }
 
-        public Task<PaymentMethodDto> Create(PaymentMethod data)
+        public async Task<AsyncVoidMethodBuilder> CreateAsync(PaymentMethod data)
         {
-            return _paymentMethodRepository.Create(data);
+            return await _paymentMethodRepository.CreateAsync(data);
         }
 
-        public Task<PaymentMethodDto> Update(int id, PaymentMethod data)
+        public async Task<AsyncVoidMethodBuilder> UpdateAsync(int id, PaymentMethod data)
         {
-            return _paymentMethodRepository.Update(id, data);
+            return  await _paymentMethodRepository.UpdateAsync(id, data);
         }
 
         public Task<bool> Delete(int id)

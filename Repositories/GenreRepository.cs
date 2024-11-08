@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Genre;
 using CinemaApp.Infrastructures.Database;
 using CinemaApp.Interfaces.Repositories;
@@ -29,24 +30,24 @@ namespace CinemaApp.Repositories
             return Task.FromResult(_applicationDBContext.Genres.Any(data => data.Id == id));
         }
 
-        public Task<GenreDto> Create(Genre data)
+        public async Task<AsyncVoidMethodBuilder> CreateAsync(Genre data)
         {
-            _applicationDBContext.Genres.Add(data);
-            _applicationDBContext.SaveChanges();
+            await _applicationDBContext.Genres.AddAsync(data);
+            await _applicationDBContext.SaveChangesAsync();
 
-            return Task.FromResult(data.ToDto());
+            return  AsyncVoidMethodBuilder.Create();
         }
 
-        public Task<GenreDto> Update(int id, Genre data)
+        public async Task<AsyncVoidMethodBuilder> UpdateAsync(int id, Genre data)
         {
-            var currentData = _applicationDBContext.Genres.Find(id) ?? throw new Exception("Data not found");
+            var currentData = await _applicationDBContext.Genres.FindAsync(id) ?? throw new Exception("Data not found");
 
             currentData.Name = data.Name;
             currentData.IsActive = data.IsActive;
 
-            _applicationDBContext.SaveChanges();
+            await _applicationDBContext.SaveChangesAsync();
 
-            return Task.FromResult(currentData.ToDto());
+            return AsyncVoidMethodBuilder.Create();
         }
 
         public Task<bool> Delete(int id)

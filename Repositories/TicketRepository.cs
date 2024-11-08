@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Ticket;
 using CinemaApp.Infrastructures.Database;
 using CinemaApp.Interfaces.Repositories;
@@ -11,21 +12,12 @@ namespace CinemaApp.Repositories
     {
         private readonly ApplicationDBContext _applicationDBContext = applicationDBContext;
 
-        public async Task<TicketDto> CreateAsync(Ticket ticket)
+        public async Task<AsyncVoidMethodBuilder> CreateAsync(Ticket ticket)
         {
             await _applicationDBContext.Tickets.AddAsync(ticket);
             await _applicationDBContext.SaveChangesAsync();
 
-            var createdData = await _applicationDBContext.Tickets
-                            .Include(data => data.User)
-                            .Include(data => data.Schedule)
-                            .ThenInclude(data => data.Movie)
-                            .ThenInclude(data => data.Genre)
-                            .Include(data => data.Schedule)
-                            .ThenInclude(data => data.Studio)
-                            .FirstOrDefaultAsync(data => data.Id == ticket.Id) ?? throw new Exception("Data not found");
-
-            return createdData.ToDto();
+            return AsyncVoidMethodBuilder.Create();
         }
     }
 }

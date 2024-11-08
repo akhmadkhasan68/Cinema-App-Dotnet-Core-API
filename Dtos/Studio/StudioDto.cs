@@ -10,7 +10,7 @@ namespace CinemaApp.Dtos.Studio
 
         public int Capacity { get; set; }
 
-        public List<StudioFacility> StudioFacilities { get; set; } = [];
+        public ICollection<StudioFacility> StudioFacilities { get; set; } = [];
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 

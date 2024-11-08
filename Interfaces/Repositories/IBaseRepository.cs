@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace CinemaApp.Interfaces.Repositories
 {
     public interface IBaseRepository<TResponse, TParamData>
@@ -6,9 +8,9 @@ namespace CinemaApp.Interfaces.Repositories
 
         Task<TResponse> FindOne(int id);
 
-        Task<TResponse> Create(TParamData data);
+        Task<AsyncVoidMethodBuilder> CreateAsync(TParamData data);
 
-        Task<TResponse> Update(int id, TParamData data);
+        Task<AsyncVoidMethodBuilder> UpdateAsync(int id, TParamData data);
 
         Task<bool> Delete(int id);
     }

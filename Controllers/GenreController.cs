@@ -1,6 +1,5 @@
 using CinemaApp.Dtos.Genre;
 using CinemaApp.Infrastructures.Responses;
-using CinemaApp.Interfaces.Responses;
 using CinemaApp.Interfaces.Services;
 using CinemaApp.Mappers;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +13,7 @@ namespace CinemaApp.Controllers
         private readonly IGenreService _genreService = genreService;
 
         [HttpGet]
-        public async Task<ActionResult<IApiResponse<List<GenreResponseDto>>>> GetAll()
+        public async Task<ActionResult<ApiResponse<List<GenreResponseDto>>>> GetAll()
         {
             var genres = await _genreService.GetAll();
 
@@ -22,7 +21,7 @@ namespace CinemaApp.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<IApiResponse<GenreResponseDto>>> FindOne([FromRoute] int id)
+        public async Task<ActionResult<ApiResponse<GenreResponseDto>>> FindOne([FromRoute] int id)
         {
             var genre = await _genreService.FindOne(id);
 
@@ -30,28 +29,28 @@ namespace CinemaApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<IApiResponse<GenreResponseDto>>> Create([FromBody] GenreRequestDto genreRequestDto)
+        public async Task<ActionResult<ApiResponse>> Create([FromBody] GenreRequestDto genreRequestDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var newGenre = await _genreService.Create(genreRequestDto.ToModel());
+            await _genreService.CreateAsync(genreRequestDto.ToModel());
 
-            return Ok(ApiResponse<GenreResponseDto>.Success(newGenre.ToResponse()));
+            return Ok(ApiResponse.Success("Genre created successfully"));
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<IApiResponse<GenreResponseDto>>> Update([FromRoute] int id, [FromBody] GenreRequestDto genreRequestDto)
+        public async Task<ActionResult<ApiResponse>> Update([FromRoute] int id, [FromBody] GenreRequestDto genreRequestDto)
         {
-            var updatedGenre = await _genreService.Update(id, genreRequestDto.ToModel());
+            await _genreService.UpdateAsync(id, genreRequestDto.ToModel());
 
-            return Ok(ApiResponse<GenreResponseDto>.Success(updatedGenre.ToResponse()));
+            return Ok(ApiResponse.Success("Genre updated successfully"));
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<IApiResponse<bool>>> Delete([FromRoute] int id)
+        public async Task<ActionResult<ApiResponse<bool>>> Delete([FromRoute] int id)
         {
             var isDeleted = await _genreService.Delete(id);
 

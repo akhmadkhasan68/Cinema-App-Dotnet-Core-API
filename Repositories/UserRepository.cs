@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Role;
 using CinemaApp.Dtos.User;
 using CinemaApp.Infrastructures.Database;
@@ -50,16 +51,11 @@ namespace CinemaApp.Repositories
             return user?.ToDto();
         }
 
-        public async Task<UserDto> CreateAsync(User user) {
+        public async Task<AsyncVoidMethodBuilder> CreateAsync(User user) {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            var createdUser = await _context.Users
-                        .Include(user => user.Role)
-                        .AsSplitQuery()
-                        .FirstOrDefaultAsync(user => user.Id == user.Id) ?? throw new Exception("User not found");
-
-            return createdUser.ToDto(); 
+            return AsyncVoidMethodBuilder.Create();
         }
     }
 }

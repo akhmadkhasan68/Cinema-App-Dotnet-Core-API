@@ -15,6 +15,6 @@ namespace CinemaApp.Dtos.Studio
 
         [Required(ErrorMessage = "Facility is required")]
         [MinLength(1, ErrorMessage = "At least one Facility is required.")]
-        public List<int> FacilityIds { get; set; } = [];
+        public ICollection<int> FacilityIds { get; set; } = [];
     }
 }

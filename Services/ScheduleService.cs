@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Schedule;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Interfaces.Services;
@@ -21,7 +22,7 @@ namespace CinemaApp.Services
             return _scheduleRepository.FindOne(id);
         }
 
-        public async Task<ScheduleDto> Create(ScheduleRequestDto data)
+        public async Task<AsyncVoidMethodBuilder> CreateAsync(ScheduleRequestDto data)
         {
             var IsMovieExist = await _movieRepository.IsExist(data.MovieId);
 
@@ -31,10 +32,10 @@ namespace CinemaApp.Services
 
             if (!IsStudioExist) throw new Exception("Studio not found");
 
-            return await _scheduleRepository.Create(data.ToModel());
+            return await _scheduleRepository.CreateAsync(data.ToModel());
         }
 
-        public async Task<ScheduleDto> Update(int id, ScheduleRequestDto data)
+        public async Task<AsyncVoidMethodBuilder> UpdateAsync(int id, ScheduleRequestDto data)
         {
             var IsMovieExist = await _movieRepository.IsExist(data.MovieId);
 
@@ -44,7 +45,7 @@ namespace CinemaApp.Services
 
             if (!IsStudioExist) throw new Exception("Studio not found");
 
-            return await _scheduleRepository.Update(id, data.ToModel());
+            return await _scheduleRepository.UpdateAsync(id, data.ToModel());
         }
 
         public Task<bool> Delete(int id)

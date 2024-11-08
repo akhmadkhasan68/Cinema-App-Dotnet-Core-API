@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Movie;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Interfaces.Services;
@@ -23,22 +24,22 @@ namespace CinemaApp.Services
             return _movieRepository.FindOne(id);
         }
 
-        public async Task<MovieDto> Create(MovieRequestDto data)
+        public async Task<AsyncVoidMethodBuilder> CreateAsync(MovieRequestDto data)
         {
             var IsExist = await _genreRepository.IsExist(data.GenreId);
 
             if (!IsExist) throw new Exception("Genre not found");
 
-            return await _movieRepository.Create(data.ToModel());
+            return await _movieRepository.CreateAsync(data.ToModel());
         }
 
-        public async Task<MovieDto> Update(int id, MovieRequestDto data)
+        public async Task<AsyncVoidMethodBuilder> UpdateAsync(int id, MovieRequestDto data)
         {
             var IsExist = await _genreRepository.IsExist(data.GenreId);
 
             if (!IsExist) throw new Exception("Genre not found");
 
-            return await _movieRepository.Update(id, data.ToModel());
+            return await _movieRepository.UpdateAsync(id, data.ToModel());
         }
 
         public Task<bool> Delete(int id)

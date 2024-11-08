@@ -1,32 +1,45 @@
 using System.Net;
-using CinemaApp.Interfaces.Responses;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace CinemaApp.Infrastructures.Responses
 {
-    public class ApiResponse<T> : IApiResponse<T>
+    // Adding = VoidResult as default type parameter
+    public class ApiResponse
     {
         public int Status { get; set; }
         public string Message { get; set; } = null!;
-        public T Data { get; set; } = default!;
+
+        public static ApiResponse Success(string message = "OK")
+        {
+            return new ApiResponse
+            {
+                Status = (int)HttpStatusCode.OK,
+                Message = message,
+            };
+        }
+
+        public static ApiResponse Error(string message, int statusCode = (int)HttpStatusCode.InternalServerError)
+        {
+            return new ApiResponse
+            {
+                Status = statusCode == 0 ? (int)HttpStatusCode.InternalServerError : statusCode,
+                Message = message
+            };
+        }
+    }
+
+    public class ApiResponse<T> : ApiResponse
+    {
+        public T? Data { get; set; }
 
         public static ApiResponse<T> Success(T data, string message = "OK")
         {
             return new ApiResponse<T>
             {
-                Status = HttpStatusCode.OK.GetHashCode(),
+                Status = (int)HttpStatusCode.OK,
                 Message = message,
                 Data = data
             };
         }
-
-        public static ApiResponse<T> Error(string message, int statusCode)
-        {
-            return new ApiResponse<T>
-            {
-                Status = statusCode == 0 ? HttpStatusCode.InternalServerError.GetHashCode() : statusCode,
-                Message = message
-            };
-        }
     }
+    
 }

@@ -1,6 +1,5 @@
 using CinemaApp.Dtos.Studio;
 using CinemaApp.Infrastructures.Responses;
-using CinemaApp.Interfaces;
 using CinemaApp.Interfaces.Services;
 using CinemaApp.Mappers;
 using Microsoft.AspNetCore.Mvc;
@@ -27,21 +26,21 @@ public class StudioController(IStudioService studioService) : ControllerBase {
     }
 
     [HttpPost]
-    public async Task<ActionResult<ApiResponse<StudioResponseDto>>> AddStudio([FromBody] StudioRequestDto studioRequestDto) {
+    public async Task<ActionResult<ApiResponse>> AddStudio([FromBody] StudioRequestDto studioRequestDto) {
         if (!ModelState.IsValid) {
             return BadRequest(ModelState);
         }
 
-        var newStudio = await _studioService.Create(studioRequestDto.ToModel());
+        await _studioService.CreateAsync(studioRequestDto.ToModel());
         
-        return Ok(ApiResponse<StudioResponseDto>.Success(newStudio.ToResponse()));
+        return Ok(ApiResponse.Success("Studio created successfully"));
     }
 
     [HttpPut("{id:int}")]
-    public async Task<ActionResult<ApiResponse<StudioResponseDto>>> UpdateStudio([FromRoute] int id, [FromBody] StudioRequestDto studioRequestDto) {
-        var updatedStudio = await _studioService.Update(id, studioRequestDto.ToModel());
+    public async Task<ActionResult<ApiResponse>> UpdateStudio([FromRoute] int id, [FromBody] StudioRequestDto studioRequestDto) {
+        await _studioService.UpdateAsync(id, studioRequestDto.ToModel());
         
-        return Ok(ApiResponse<StudioResponseDto>.Success(updatedStudio.ToResponse()));
+        return Ok(ApiResponse.Success("Studio updated successfully"));
     }
 
     [HttpDelete("{id:int}")]

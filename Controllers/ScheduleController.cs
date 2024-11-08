@@ -27,21 +27,21 @@ namespace CinemaApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ApiResponse<ScheduleResponseDto>>> AddStudio([FromBody] ScheduleRequestDto scheduleRequestDto) {
+        public async Task<ActionResult<ApiResponse>> AddStudio([FromBody] ScheduleRequestDto scheduleRequestDto) {
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
 
-            var newData = await _scheduleService.Create(scheduleRequestDto);
+            await _scheduleService.CreateAsync(scheduleRequestDto);
             
-            return Ok(ApiResponse<ScheduleResponseDto>.Success(newData.ToResponse()));
+            return Ok(ApiResponse.Success("Schedule created successfully"));
         }
 
         [HttpPut("{id:int}")]
         public async Task<ActionResult<ApiResponse<ScheduleResponseDto>>> UpdateStudio([FromRoute] int id, [FromBody] ScheduleRequestDto scheduleRequestDto) {
-            var updatedData = await _scheduleService.Update(id, scheduleRequestDto);
+            await _scheduleService.UpdateAsync(id, scheduleRequestDto);
             
-            return Ok(ApiResponse<ScheduleResponseDto>.Success(updatedData.ToResponse()));
+            return Ok(ApiResponse<ScheduleResponseDto>.Success("Schedule updated successfully"));
         }
 
         [HttpDelete("{id:int}")]

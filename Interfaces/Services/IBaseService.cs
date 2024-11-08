@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace CinemaApp.Interfaces.Services
 {
     public interface IBaseService<TDto, TModel>
@@ -6,9 +8,9 @@ namespace CinemaApp.Interfaces.Services
 
         public Task<TDto> FindOne(int id);
 
-        public Task<TDto> Create(TModel data);
+        public Task<AsyncVoidMethodBuilder> CreateAsync(TModel data);
 
-        public Task<TDto> Update(int id, TModel data);
+        public Task<AsyncVoidMethodBuilder> UpdateAsync(int id, TModel data);
 
         public Task<bool> Delete(int id);
     }

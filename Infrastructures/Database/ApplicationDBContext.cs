@@ -35,6 +35,12 @@ public class ApplicationDBContext(DbContextOptions<ApplicationDBContext> options
     {
         base.OnModelCreating(modelBuilder);
 
+        // User Email Unique
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+
+
         // Role Permission Many-to-Many
         modelBuilder.Entity<RolePermission>()
             .HasKey(rp => new { rp.RoleId, rp.PermissionId });

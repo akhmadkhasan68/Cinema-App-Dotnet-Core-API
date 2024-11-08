@@ -1,6 +1,5 @@
 using CinemaApp.Dtos.Ticket;
 using CinemaApp.Infrastructures.Responses;
-using CinemaApp.Interfaces.Responses;
 using CinemaApp.Interfaces.Services;
 using CinemaApp.Mappers;
 using Microsoft.AspNetCore.Authorization;
@@ -21,7 +20,7 @@ namespace CinemaApp.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<IApiResponse<TicketResponseDto>>> BuyTicketAsync([FromBody] TicketBuyRequestDto ticketBuyRequestDto)
+        public async Task<ActionResult<ApiResponse>> BuyTicketAsync([FromBody] TicketBuyRequestDto ticketBuyRequestDto)
         {
             if (!ModelState.IsValid)
             {
@@ -29,9 +28,9 @@ namespace CinemaApp.Controllers
             }
 
             var userID = 2; // TODO: get userId from token
-            var ticket = await _ticketService.BuyTicketAsync(ticketBuyRequestDto, userID); 
+            await _ticketService.BuyTicketAsync(ticketBuyRequestDto, userID); 
 
-            return Ok(ApiResponse<TicketResponseDto>.Success(ticket.ToResponse()));
+            return Ok(ApiResponse.Success("Ticket bought successfully"));
         }
     }
 }

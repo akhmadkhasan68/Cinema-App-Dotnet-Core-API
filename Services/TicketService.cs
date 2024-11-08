@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Ticket;
 using CinemaApp.Infrastructures.Queue.Email;
 using CinemaApp.Interfaces.Repositories;
@@ -19,7 +20,7 @@ namespace CinemaApp.Services
 
         private readonly IEmailService _emailService = emailService;
 
-        public async Task<TicketDto> BuyTicketAsync(TicketBuyRequestDto ticketBuyRequestDto, int userId)
+        public async Task<AsyncVoidMethodBuilder> BuyTicketAsync(TicketBuyRequestDto ticketBuyRequestDto, int userId)
         {
             var scheduleIsExist = await _scheduleRepository.IsExistAsync(ticketBuyRequestDto.ScheduleId);
 
@@ -28,7 +29,7 @@ namespace CinemaApp.Services
                 throw new Exception("Schedule not found");
             }
 
-            var createdTicket = await _ticketRepository.CreateAsync(ticketBuyRequestDto.ToModel(userId, TicketStatus.Pending));
+            await _ticketRepository.CreateAsync(ticketBuyRequestDto.ToModel(userId, TicketStatus.Pending));
 
             // Send email to user 
             // TODO: get user email from token
@@ -38,7 +39,7 @@ namespace CinemaApp.Services
                 Body = "Your ticket has been ordered"
             });
 
-            return createdTicket;
+            return AsyncVoidMethodBuilder.Create();
         }
     }
 }

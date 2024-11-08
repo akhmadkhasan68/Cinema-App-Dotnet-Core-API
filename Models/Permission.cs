@@ -8,5 +8,5 @@ public class Permission : BaseModel
     
     public string Name { get; set; } = null!;   
 
-    public List<RolePermission> RolePermissions { get; set; } = [];
+    public ICollection<RolePermission> RolePermissions { get; set; } = [];
 }

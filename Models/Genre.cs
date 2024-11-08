@@ -6,5 +6,5 @@ public class Genre : BaseModel
 
     public bool IsActive { get; set; } = true;
 
-    public List<Movie> Movies { get; } = [];
+    public ICollection<Movie> Movies { get; } = [];
 }

@@ -1,6 +1,5 @@
 using CinemaApp.Dtos.PaymentMethod;
 using CinemaApp.Infrastructures.Responses;
-using CinemaApp.Interfaces.Responses;
 using CinemaApp.Interfaces.Services;
 using CinemaApp.Mappers;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +13,7 @@ namespace CinemaApp.Controllers
         private readonly IPaymentMethodService _paymentMethodService = paymentMethodService;
 
         [HttpGet]
-        public async Task<ActionResult<IApiResponse<List<PaymentMethodResponseDto>>>> GetAll()
+        public async Task<ActionResult<ApiResponse<List<PaymentMethodResponseDto>>>> GetAll()
         {
             var datas = await _paymentMethodService.GetAll();
 
@@ -22,7 +21,7 @@ namespace CinemaApp.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<IApiResponse<PaymentMethodResponseDto>>> FindOne([FromRoute] int id)
+        public async Task<ActionResult<ApiResponse<PaymentMethodResponseDto>>> FindOne([FromRoute] int id)
         {
             var data = await _paymentMethodService.FindOne(id);
 
@@ -30,28 +29,28 @@ namespace CinemaApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<IApiResponse<PaymentMethodResponseDto>>> Create([FromBody] PaymentMethodRequestDto paymentMethodRequestDto)
+        public async Task<ActionResult<ApiResponse>> Create([FromBody] PaymentMethodRequestDto paymentMethodRequestDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var data = await _paymentMethodService.Create(paymentMethodRequestDto.ToModel());
+            await _paymentMethodService.CreateAsync(paymentMethodRequestDto.ToModel());
 
-            return Ok(ApiResponse<PaymentMethodResponseDto>.Success(data.ToResponse()));
+            return Ok(ApiResponse.Success("Payment method created successfully"));
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<IApiResponse<PaymentMethodResponseDto>>> Update([FromRoute] int id, [FromBody] PaymentMethodRequestDto paymentMethodRequestDto)
+        public async Task<ActionResult<ApiResponse>> Update([FromRoute] int id, [FromBody] PaymentMethodRequestDto paymentMethodRequestDto)
         {
-            var data = await _paymentMethodService.Update(id, paymentMethodRequestDto.ToModel());
+            await _paymentMethodService.UpdateAsync(id, paymentMethodRequestDto.ToModel());
 
-            return Ok(ApiResponse<PaymentMethodResponseDto>.Success(data.ToResponse()));
+            return Ok(ApiResponse.Success("Payment method updated successfully"));
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<IApiResponse<bool>>> Delete([FromRoute] int id)
+        public async Task<ActionResult<ApiResponse<bool>>> Delete([FromRoute] int id)
         {
             var isDeleted = await _paymentMethodService.Delete(id);
 

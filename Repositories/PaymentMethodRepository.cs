@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.PaymentMethod;
 using CinemaApp.Infrastructures.Database;
 using CinemaApp.Interfaces.Repositories;
@@ -23,24 +24,24 @@ namespace CinemaApp.Repositories
             return Task.FromResult(data.ToDto());
         }
 
-        public Task<PaymentMethodDto> Create(PaymentMethod data)
+        public async Task<AsyncVoidMethodBuilder> CreateAsync(PaymentMethod data)
         {
-            _applicationDBContext.PaymentMethods.Add(data);
-            _applicationDBContext.SaveChanges();
+            await _applicationDBContext.PaymentMethods.AddAsync(data);
+            await _applicationDBContext.SaveChangesAsync();
 
-            return Task.FromResult(data.ToDto());
+            return AsyncVoidMethodBuilder.Create();
         }
 
-        public Task<PaymentMethodDto> Update(int id, PaymentMethod data)
+        public async Task<AsyncVoidMethodBuilder> UpdateAsync(int id, PaymentMethod data)
         {
-            var existingData = _applicationDBContext.PaymentMethods.Find(id) ?? throw new Exception("Data not found");
+            var existingData = await _applicationDBContext.PaymentMethods.FindAsync(id) ?? throw new Exception("Data not found");
 
             existingData.Name = data.Name;
             existingData.IsActive = data.IsActive;
 
-            _applicationDBContext.SaveChanges();
+            await _applicationDBContext.SaveChangesAsync();
 
-            return Task.FromResult(existingData.ToDto());
+            return AsyncVoidMethodBuilder.Create();
         }
 
         public Task<bool> Delete(int id)

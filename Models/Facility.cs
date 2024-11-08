@@ -6,5 +6,5 @@ public class Facility : BaseModel
 
     public bool IsActive { get; set; } = true;
 
-    public List<StudioFacility> StudioFacilities { get; } = [];
+    public ICollection<StudioFacility> StudioFacilities { get; } = [];
 }
