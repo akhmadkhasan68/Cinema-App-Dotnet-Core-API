@@ -1,4 +1,5 @@
 using CinemaApp.Dtos.Movie;
+using CinemaApp.Dtos.Pagination;
 using CinemaApp.Infrastructures.Responses;
 using CinemaApp.Interfaces.Services;
 using CinemaApp.Mappers;
@@ -13,11 +14,16 @@ namespace CinemaApp.Controllers
         private readonly IMovieService _movieService = movieService;
 
         [HttpGet]
-        public async Task<ActionResult<ApiResponse<List<MovieResponseDto>>>> GetMovies()
+        public async Task<ActionResult<PaginateResponse<MovieResponseDto>>> GetMovies([FromQuery] PaginationRequestDto paginationRequestDto)
         {
-            var movies = await _movieService.GetAll();
+            var movies = await _movieService.GetAll(paginationRequestDto);
 
-            return Ok(ApiResponse<List<MovieResponseDto>>.Success(movies.Select(movie => movie.ToResponse()).ToList()));
+            return Ok(PaginateResponse<MovieResponseDto>.Success(
+                movies.Select(movie => movie.ToResponse()).ToList(),
+                paginationRequestDto.Page,
+                paginationRequestDto.PerPage,
+                movies.Count
+            ));
         }
 
         [HttpGet("{id:int}")]

@@ -1,10 +1,14 @@
 using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Genre;
+using CinemaApp.Dtos.Pagination;
 using CinemaApp.Infrastructures.Database;
 using CinemaApp.Infrastructures.Exceptions;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Mappers;
 using CinemaApp.Models;
+using CinemaApp.Utils.Constans;
+using CinemaApp.Utils.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Repositories
 {
@@ -12,11 +16,34 @@ namespace CinemaApp.Repositories
     {
         private readonly ApplicationDBContext _applicationDBContext = applicationDBContext;
 
-        public Task<List<GenreDto>> GetAll()
+        public async Task<List<GenreDto>> GetAll(PaginationRequestDto paginationRequestDto)
         {
-            var datas = _applicationDBContext.Genres.ToList();
+            var datas = _applicationDBContext.Genres.AsQueryable();
 
-            return Task.FromResult(datas.Select(data => data.ToDto()).ToList());
+            if (!string.IsNullOrEmpty(paginationRequestDto.Keyword))
+            {
+                datas = datas.Where(data => data.Name.Contains(paginationRequestDto.Keyword));
+            }
+
+            if (!string.IsNullOrEmpty(paginationRequestDto.SortBy) && !string.IsNullOrEmpty(paginationRequestDto.Order))
+            {
+                switch (paginationRequestDto.SortBy)
+                {
+                    case "name":
+                        datas = paginationRequestDto.Order.Equals(PaginationOrder.Asc) ? datas.OrderBy(data => data.Name) : datas.OrderByDescending(data => data.Name);
+                        break;
+                    case "is_active":
+                        datas = paginationRequestDto.Order.Equals(PaginationOrder.Asc) ? datas.OrderBy(data => data.IsActive) : datas.OrderByDescending(data => data.IsActive);
+                        break;
+                }
+            }
+
+            
+            datas = datas.Skip(
+                PaginationHelper.CalculateSkip(paginationRequestDto.Page, paginationRequestDto.PerPage)
+            ).Take(paginationRequestDto.PerPage);
+
+            return await datas.Select(data => data.ToDto()).ToListAsync();
         }
 
         public Task<GenreDto> FindOne(int id)

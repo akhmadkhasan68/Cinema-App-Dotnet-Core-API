@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using CinemaApp.Dtos.Pagination;
 using CinemaApp.Dtos.PaymentMethod;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Interfaces.Services;
@@ -10,9 +11,9 @@ namespace CinemaApp.Services
     {
         private readonly IPaymentMethodRepository _paymentMethodRepository = paymentMethodRepository;
 
-        public Task<List<PaymentMethodDto>> GetAll()
+        public async Task<List<PaymentMethodDto>> GetAll(PaginationRequestDto paginationRequest)
         {
-            return _paymentMethodRepository.GetAll();
+            return await _paymentMethodRepository.GetAll(paginationRequest);
         }
 
         public Task<PaymentMethodDto> FindOne(int id)

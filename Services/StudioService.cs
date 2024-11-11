@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using CinemaApp.Dtos.Pagination;
 using CinemaApp.Dtos.Studio;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Interfaces.Services;
@@ -10,9 +11,9 @@ namespace CinemaApp.Services
     {
         private readonly IStudioRepository _studioRepository = studioRepository;
 
-        public Task<List<StudioDto>> GetAll()
+        public async Task<List<StudioDto>> GetAll(PaginationRequestDto paginationRequestDto)
         {
-            return _studioRepository.GetAll();
+            return await _studioRepository.GetAll(paginationRequestDto);
         }
 
         public Task<StudioDto> FindOne(int id)

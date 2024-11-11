@@ -1,3 +1,4 @@
+using CinemaApp.Dtos.Pagination;
 using CinemaApp.Dtos.PaymentMethod;
 using CinemaApp.Infrastructures.Responses;
 using CinemaApp.Interfaces.Services;
@@ -13,11 +14,16 @@ namespace CinemaApp.Controllers
         private readonly IPaymentMethodService _paymentMethodService = paymentMethodService;
 
         [HttpGet]
-        public async Task<ActionResult<ApiResponse<List<PaymentMethodResponseDto>>>> GetAll()
+        public async Task<ActionResult<PaginateResponse<PaymentMethodResponseDto>>> GetAll([FromQuery] PaginationRequestDto paginationRequestDto)
         {
-            var datas = await _paymentMethodService.GetAll();
+            var datas = await _paymentMethodService.GetAll(paginationRequestDto);
 
-            return Ok(ApiResponse<List<PaymentMethodResponseDto>>.Success(datas.Select(data => data.ToResponse()).ToList()));
+            return Ok(PaginateResponse<PaymentMethodResponseDto>.Success(
+                datas.Select(data => data.ToResponse()).ToList(),
+                paginationRequestDto.Page,
+                paginationRequestDto.PerPage,
+                datas.Count
+            ));
         }
 
         [HttpGet("{id:int}")]

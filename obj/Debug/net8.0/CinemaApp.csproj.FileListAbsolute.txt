@@ -148,3 +148,4 @@
 /Users/akhmadkhasanabdullah/Documents/Dev/Other/CinemaApp/bin/Debug/net8.0/Quartz.dll
 /Users/akhmadkhasanabdullah/Documents/Dev/Other/CinemaApp/bin/Debug/net8.0/Quartz.Extensions.DependencyInjection.dll
 /Users/akhmadkhasanabdullah/Documents/Dev/Other/CinemaApp/bin/Debug/net8.0/Quartz.Extensions.Hosting.dll
+/Users/akhmadkhasanabdullah/Documents/Dev/Other/CinemaApp/bin/Debug/net8.0/Newtonsoft.Json.dll

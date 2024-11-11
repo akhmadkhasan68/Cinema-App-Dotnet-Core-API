@@ -1,3 +1,4 @@
+using CinemaApp.Dtos.Pagination;
 using CinemaApp.Dtos.Schedule;
 using CinemaApp.Infrastructures.Responses;
 using CinemaApp.Interfaces.Services;
@@ -13,10 +14,15 @@ namespace CinemaApp.Controllers
         private readonly IScheduleService _scheduleService = scheduleService;
 
         [HttpGet]
-        public async Task<ActionResult<ApiResponse<List<ScheduleResponseDto>>>> GetStudios() {
-            var datas = await _scheduleService.GetAll();
+        public async Task<ActionResult<PaginateResponse<ScheduleResponseDto>>> GetStudios([FromQuery] PaginationRequestDto paginationRequestDto) {
+            var datas = await _scheduleService.GetAll(paginationRequestDto);
 
-            return Ok(ApiResponse<List<ScheduleResponseDto>>.Success(datas.Select(data => data.ToResponse()).ToList()));
+            return Ok(PaginateResponse<ScheduleResponseDto>.Success(
+                datas.Select(data => data.ToResponse()).ToList(),
+                paginationRequestDto.Page,
+                paginationRequestDto.PerPage,
+                datas.Count
+            ));
         }
 
         [HttpGet("{id:int}")]

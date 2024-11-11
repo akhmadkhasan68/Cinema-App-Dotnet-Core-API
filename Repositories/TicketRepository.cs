@@ -4,7 +4,6 @@ using CinemaApp.Infrastructures.Database;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Mappers;
 using CinemaApp.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Repositories
 {

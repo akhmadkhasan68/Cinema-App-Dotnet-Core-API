@@ -1,10 +1,11 @@
 using System.Runtime.CompilerServices;
+using CinemaApp.Dtos.Pagination;
 
 namespace CinemaApp.Interfaces.Services
 {
     public interface IBaseService<TDto, TModel>
     {
-        public Task<List<TDto>> GetAll();
+        public Task<List<TDto>> GetAll(PaginationRequestDto paginationRequestDto);
 
         public Task<TDto> FindOne(int id);
 

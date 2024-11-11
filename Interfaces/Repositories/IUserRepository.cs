@@ -10,6 +10,8 @@ namespace CinemaApp.Interfaces.Repositories
 
         public Task<UserDto?> FindByEmailAsync(string email);
 
+        public Task<UserDto> FindByIdOrFailAsync(int id);
+
         public Task<AsyncVoidMethodBuilder> CreateAsync(User user);
     }
 }

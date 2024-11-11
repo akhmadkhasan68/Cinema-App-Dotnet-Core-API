@@ -1,5 +1,6 @@
 using System.Text;
 using CinemaApp.Infrastructures.Database;
+using CinemaApp.Infrastructures.Extentions;
 using CinemaApp.Infrastructures.Jobs.TicketExpired;
 using CinemaApp.Infrastructures.Middlewares;
 using CinemaApp.Utils.Helpers;
@@ -19,6 +20,10 @@ namespace CinemaApp
         public void InitServiceProvider()
         {
             _builder.Services.AddControllers();
+
+            _builder.Services.AddMvc().AddJsonOptions(options => {
+                options.JsonSerializerOptions.PropertyNamingPolicy = new SnakeCaseNamingPolicy();
+            });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             _builder.Services.AddEndpointsApiExplorer();

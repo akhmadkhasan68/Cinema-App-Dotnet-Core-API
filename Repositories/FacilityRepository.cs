@@ -1,10 +1,14 @@
 using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Facility;
+using CinemaApp.Dtos.Pagination;
 using CinemaApp.Infrastructures.Database;
 using CinemaApp.Infrastructures.Exceptions;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Mappers;
 using CinemaApp.Models;
+using CinemaApp.Utils.Constans;
+using CinemaApp.Utils.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Repositories
 {
@@ -12,11 +16,34 @@ namespace CinemaApp.Repositories
     {
         private readonly ApplicationDBContext _context = context;
 
-        public Task<List<FacilityDto>> GetAll()
+        public async Task<List<FacilityDto>> GetAll(PaginationRequestDto paginationRequestDto)
         {
-            var datas = _context.Facilities.ToList().Select(data => data.ToDto()).ToList();
+            var datas = _context.Facilities.AsQueryable();
 
-            return Task.FromResult(datas);
+            if (!string.IsNullOrEmpty(paginationRequestDto.Keyword))
+            {
+                datas = datas.Where(data => data.Name.Contains(paginationRequestDto.Keyword));
+            }
+
+            if (!string.IsNullOrEmpty(paginationRequestDto.SortBy) && !string.IsNullOrEmpty(paginationRequestDto.Order))
+            {
+                switch (paginationRequestDto.SortBy)
+                {
+                    case "name":
+                        datas = paginationRequestDto.Order.Equals(PaginationOrder.Asc) ? datas.OrderBy(data => data.Name) : datas.OrderByDescending(data => data.Name);
+                        break;
+                    case "is_active":
+                        datas = paginationRequestDto.Order.Equals(PaginationOrder.Asc) ? datas.OrderBy(data => data.IsActive) : datas.OrderByDescending(data => data.IsActive);
+                        break;
+                }
+            }
+
+            
+            datas = datas.Skip(
+                PaginationHelper.CalculateSkip(paginationRequestDto.Page, paginationRequestDto.PerPage)
+            ).Take(paginationRequestDto.PerPage);
+
+            return await datas.Select(data => data.ToDto()).ToListAsync();
         }
 
         public Task<FacilityDto> FindOne(int id)

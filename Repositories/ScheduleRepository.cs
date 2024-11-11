@@ -1,12 +1,15 @@
 using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Genre;
 using CinemaApp.Dtos.Movie;
+using CinemaApp.Dtos.Pagination;
 using CinemaApp.Dtos.Schedule;
 using CinemaApp.Dtos.Studio;
 using CinemaApp.Infrastructures.Database;
 using CinemaApp.Infrastructures.Exceptions;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Models;
+using CinemaApp.Utils.Constans;
+using CinemaApp.Utils.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Repositories
@@ -16,16 +19,39 @@ namespace CinemaApp.Repositories
 
         private readonly ApplicationDBContext _context = applicationDBContext;
 
-        public Task<List<ScheduleDto>> GetAll()
+        public async Task<List<ScheduleDto>> GetAll(PaginationRequestDto paginationRequestDto)
         {
             var datas = _context.Schedules
                         .Include(data => data.Movie)
                         .ThenInclude(data => data.Genre)
                         .Include(data => data.Studio)
                         .AsSplitQuery()
-                        .ToList();
+                        .AsQueryable();
 
-            return Task.FromResult(datas.Select(data => new ScheduleDto{
+            if (!string.IsNullOrEmpty(paginationRequestDto.Keyword))
+            {
+                datas = datas.Where(data => data.Movie.Title.Contains(paginationRequestDto.Keyword));
+            }
+
+            if (!string.IsNullOrEmpty(paginationRequestDto.SortBy) && !string.IsNullOrEmpty(paginationRequestDto.Order))
+            {
+                switch (paginationRequestDto.SortBy)
+                {
+                    case "title":
+                        datas = paginationRequestDto.Order.Equals(PaginationOrder.Asc) ? datas.OrderBy(data => data.Movie.Title) : datas.OrderByDescending(data => data.Movie.Title);
+                        break;
+                    case "datetime":
+                        datas = paginationRequestDto.Order.Equals(PaginationOrder.Asc) ? datas.OrderBy(data => data.DateTime) : datas.OrderByDescending(data => data.DateTime);
+                        break;
+                }
+            }
+
+            
+            datas = datas.Skip(
+                PaginationHelper.CalculateSkip(paginationRequestDto.Page, paginationRequestDto.PerPage)
+            ).Take(paginationRequestDto.PerPage);
+
+            return await datas.Select(data => new ScheduleDto{
                 Id = data.Id,
                 Movie = new MovieDto
                 {
@@ -56,7 +82,7 @@ namespace CinemaApp.Repositories
                 Price = data.Price,
                 CreatedAt = data.CreatedAt,
                 UpdatedAt = data.UpdatedAt
-            }).ToList());
+            }).ToListAsync();
         }
 
         public Task<ScheduleDto> FindOne(int id)

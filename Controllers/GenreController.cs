@@ -1,4 +1,5 @@
 using CinemaApp.Dtos.Genre;
+using CinemaApp.Dtos.Pagination;
 using CinemaApp.Infrastructures.Responses;
 using CinemaApp.Interfaces.Services;
 using CinemaApp.Mappers;
@@ -13,11 +14,16 @@ namespace CinemaApp.Controllers
         private readonly IGenreService _genreService = genreService;
 
         [HttpGet]
-        public async Task<ActionResult<ApiResponse<List<GenreResponseDto>>>> GetAll()
+        public async Task<ActionResult<PaginateResponse<GenreResponseDto>>> GetAll([FromQuery] PaginationRequestDto paginationRequestDto)
         {
-            var genres = await _genreService.GetAll();
+            var genres = await _genreService.GetAll(paginationRequestDto);
 
-            return Ok(ApiResponse<List<GenreResponseDto>>.Success(genres.Select(genre => genre.ToResponse()).ToList()));
+            return Ok(PaginateResponse<GenreResponseDto>.Success(
+                genres.Select(genre => genre.ToResponse()).ToList(),
+                paginationRequestDto.Page,
+                paginationRequestDto.PerPage,
+                genres.Count
+            ));
         }
 
         [HttpGet("{id:int}")]

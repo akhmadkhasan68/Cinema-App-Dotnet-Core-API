@@ -1,10 +1,11 @@
 using System.Runtime.CompilerServices;
+using CinemaApp.Dtos.Pagination;
 
 namespace CinemaApp.Interfaces.Repositories
 {
     public interface IBaseRepository<TResponse, TParamData>
     {
-        Task<List<TResponse>> GetAll();
+        Task<List<TResponse>> GetAll(PaginationRequestDto paginationRequestDto);
 
         Task<TResponse> FindOne(int id);
 

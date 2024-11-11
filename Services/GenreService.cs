@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using CinemaApp.Dtos.Genre;
+using CinemaApp.Dtos.Pagination;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Interfaces.Services;
 using CinemaApp.Models;
@@ -10,9 +11,9 @@ namespace CinemaApp.Services
     {
         private readonly IGenreRepository _genreRepository = genreRepository;
 
-        public Task<List<GenreDto>> GetAll()
+        public async Task<List<GenreDto>> GetAll(PaginationRequestDto paginationRequestDto)
         {
-            return _genreRepository.GetAll();
+            return await _genreRepository.GetAll(paginationRequestDto);
         }
 
         public Task<GenreDto> FindOne(int id)

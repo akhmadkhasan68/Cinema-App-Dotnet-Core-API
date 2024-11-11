@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using CinemaApp.Dtos.Pagination;
 using CinemaApp.Dtos.Schedule;
 using CinemaApp.Infrastructures.Exceptions;
 using CinemaApp.Interfaces.Repositories;
@@ -13,9 +14,9 @@ namespace CinemaApp.Services
         private readonly IMovieRepository _movieRepository = movieRepository;
         private readonly IStudioRepository _studioRepository = studioRepository;
 
-        public Task<List<ScheduleDto>> GetAll()
+        public async Task<List<ScheduleDto>> GetAll(PaginationRequestDto paginationRequest)
         {
-            return _scheduleRepository.GetAll();
+            return await _scheduleRepository.GetAll(paginationRequest);
         }
 
         public Task<ScheduleDto> FindOne(int id)

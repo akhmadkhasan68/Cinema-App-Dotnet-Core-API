@@ -52,6 +52,33 @@ namespace CinemaApp.Repositories
             return user?.ToDto();
         }
 
+        public async Task<UserDto> FindByIdOrFailAsync(int id) {
+            var user = await _context.Users
+                        .Where(user => user.Id == id)
+                        .Include(user => user.Role)
+                        .AsSplitQuery()
+                        .FirstOrDefaultAsync() ?? throw new DataNotFoundException("User not found");
+
+            return new UserDto
+            {
+                Id = user.Id,
+                RoleId = user.RoleId,
+                Name = user.Name,
+                Email = user.Email,
+                Password = user.Password,
+                Role = new RoleDto
+                {
+                    Id = user.Role.Id,
+                    Key = user.Role.Key,
+                    Name = user.Role.Name,
+                    CreatedAt = user.Role.CreatedAt,
+                    UpdatedAt = user.Role.UpdatedAt
+                },
+                CreatedAt = user.CreatedAt,
+                UpdatedAt = user.UpdatedAt
+            };
+        }
+
         public async Task<AsyncVoidMethodBuilder> CreateAsync(User user) {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

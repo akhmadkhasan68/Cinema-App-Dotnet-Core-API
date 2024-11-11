@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CinemaApp.Dtos.Facility;
+using CinemaApp.Dtos.Pagination;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Interfaces.Services;
 using CinemaApp.Models;
@@ -14,9 +15,9 @@ namespace CinemaApp.Services
     {
         private readonly IFacilityRepository _facilityRepository = facilityRepository;
 
-        public Task<List<FacilityDto>> GetAll()
+        public async Task<List<FacilityDto>> GetAll(PaginationRequestDto paginationRequestDto)
         {
-            return _facilityRepository.GetAll();
+            return await _facilityRepository.GetAll(paginationRequestDto);
         }
 
         public Task<FacilityDto> FindOne(int id)

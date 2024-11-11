@@ -1,3 +1,4 @@
+using CinemaApp.Dtos.Pagination;
 using CinemaApp.Dtos.Studio;
 using CinemaApp.Infrastructures.Responses;
 using CinemaApp.Interfaces.Services;
@@ -12,10 +13,15 @@ public class StudioController(IStudioService studioService) : ControllerBase {
     private readonly IStudioService _studioService = studioService;
 
     [HttpGet]
-    public async Task<ActionResult<ApiResponse<List<StudioResponseDto>>>> GetStudios() {
-        var studios = await _studioService.GetAll();
+    public async Task<ActionResult<PaginateResponse<StudioResponseDto>>> GetStudios([FromQuery] PaginationRequestDto paginationRequestDto) {
+        var studios = await _studioService.GetAll(paginationRequestDto);
 
-        return Ok(ApiResponse<List<StudioResponseDto>>.Success(studios.Select(studio => studio.ToResponse()).ToList()));
+        return Ok(PaginateResponse<StudioResponseDto>.Success(
+            studios.Select(studio => studio.ToResponse()).ToList(),
+            paginationRequestDto.Page,
+            paginationRequestDto.PerPage,
+            studios.Count
+        ));
     }
 
     [HttpGet("{id:int}")]

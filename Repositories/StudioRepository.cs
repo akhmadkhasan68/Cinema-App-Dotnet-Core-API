@@ -1,10 +1,14 @@
 using System.Runtime.CompilerServices;
+using CinemaApp.Dtos.Pagination;
 using CinemaApp.Dtos.Studio;
 using CinemaApp.Infrastructures.Database;
 using CinemaApp.Infrastructures.Exceptions;
 using CinemaApp.Interfaces.Repositories;
 using CinemaApp.Mappers;
 using CinemaApp.Models;
+using CinemaApp.Utils.Constans;
+using CinemaApp.Utils.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Repositories
 {
@@ -12,11 +16,34 @@ namespace CinemaApp.Repositories
     {
         private readonly ApplicationDBContext _context = context;
 
-        public Task<List<StudioDto>> GetAll()
+        public async Task<List<StudioDto>> GetAll(PaginationRequestDto paginationRequestDto)
         {
-            var studios = _context.Studios.ToList().Select(studio => studio.ToDto()).ToList();
+            var datas = _context.Studios.AsQueryable();
 
-            return Task.FromResult(studios);
+            if (!string.IsNullOrEmpty(paginationRequestDto.Keyword))
+            {
+                datas = datas.Where(data => data.Name.Contains(paginationRequestDto.Keyword));
+            }
+
+            if (!string.IsNullOrEmpty(paginationRequestDto.SortBy) && !string.IsNullOrEmpty(paginationRequestDto.Order))
+            {
+                switch (paginationRequestDto.SortBy)
+                {
+                    case "name":
+                        datas = paginationRequestDto.Order.Equals(PaginationOrder.Asc) ? datas.OrderBy(data => data.Name) : datas.OrderByDescending(data => data.Name);
+                        break;
+                    case "capacity":
+                        datas = paginationRequestDto.Order.Equals(PaginationOrder.Asc) ? datas.OrderBy(data => data.Capacity) : datas.OrderByDescending(data => data.Capacity);
+                        break;
+                }
+            }
+
+            
+            datas = datas.Skip(
+                PaginationHelper.CalculateSkip(paginationRequestDto.Page, paginationRequestDto.PerPage)
+            ).Take(paginationRequestDto.PerPage);
+
+            return await datas.Select(studio => studio.ToDto()).ToListAsync();
         }
 
         public Task<StudioDto> FindOne(int id)
